@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+/* eslint-disable react/react-in-jsx-scope */
+import { NavigationContainer } from "@react-navigation/native";
+import Navigator from "./Navigation/Navigator";
+import { createContext } from "react";
+import { useFavouriteStore, useUserInfo } from "./hooks/AllHooks";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+export const UserContext = createContext();
+export const FavoriteStoreContext = createContext();
 export default function App() {
+  const { userInfo, setRefetch } = useUserInfo();
+  const { favouriteData, error, setRefetch: refetch } = useFavouriteStore();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <FavoriteStoreContext.Provider
+          value={{ favouriteData, error, setRefetch: refetch }}
+        >
+          <UserContext.Provider value={{ userInfo, setRefetch }}>
+            <Navigator />
+          </UserContext.Provider>
+        </FavoriteStoreContext.Provider>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

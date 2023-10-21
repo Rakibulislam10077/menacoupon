@@ -30,6 +30,7 @@ export const InsideStore_and_favouriteStore = ({
     // await addOrRemoveFavouriteStore(item);
     // setRefetch((prev) => prev + 1);
   };
+  // console.log(item, "================================================");
 
   return (
     <TouchableOpacity
@@ -94,6 +95,16 @@ export const InsideStore_and_favouriteStore = ({
         {item?.storeName || fvitem?.storeName}
       </Text>
       <Divider style={{ height: 1, opacity: 0.7, marginTop: 15 }} />
+      <Text
+        style={{
+          fontSize: 14,
+          color: "rgba(0,0,0,0.4)",
+          alignSelf: "center",
+          marginTop: 12,
+        }}
+      >
+        {item?.totalPosts || fvitem?.totalPosts} offers available
+      </Text>
     </TouchableOpacity>
   );
 };

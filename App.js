@@ -4,6 +4,7 @@ import Navigator from "./Navigation/Navigator";
 import { createContext } from "react";
 import { useFavouriteStore, useUserInfo } from "./hooks/AllHooks";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StatusBar } from "react-native";
 
 export const UserContext = createContext();
 export const FavoriteStoreContext = createContext();
@@ -19,6 +20,7 @@ export default function App() {
         >
           <UserContext.Provider value={{ userInfo, setRefetch }}>
             <Navigator />
+            <StatusBar />
           </UserContext.Provider>
         </FavoriteStoreContext.Provider>
       </NavigationContainer>

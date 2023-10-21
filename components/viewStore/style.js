@@ -5,7 +5,7 @@ export const customStyle = StyleSheet.create({
     backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingTop: 20,
+    paddingTop: 18,
     paddingHorizontal: 10,
     borderColor: "rgba(0,0,0,0.1)",
     borderBottomWidth: 1,

@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { customStyle } from "./style";
 import { Button, Divider } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -7,6 +7,7 @@ import { Rect, ClipPath, Defs, Path, G, Svg } from "react-native-svg";
 import StoreButton from "../../components/shared/StoreButton";
 import DealButton from "../shared/DealButton";
 import { getUKFormatDate } from "../../Utils/formattedDate";
+import { useStore } from "../../hooks/AllHooks";
 
 const StoreDetails = ({
   POitem,
@@ -16,6 +17,8 @@ const StoreDetails = ({
   setIsBottomSheetOpen,
 }) => {
   const navigation = useNavigation();
+
+  const description = item?.postDescription || POitem?.postDescription;
 
   return (
     <View View style={customStyle.storeDetailsCard}>
@@ -63,7 +66,7 @@ const StoreDetails = ({
               data={data}
               item={item}
             >
-              Get Code
+              <Text>Get Code</Text>
             </StoreButton>
           )}
         </TouchableOpacity>
@@ -104,7 +107,7 @@ const StoreDetails = ({
       ) : null}
 
       {/* this is description section optional */}
-      {POitem?.postDescription && (
+      {description && (
         <View style={[customStyle.verifiedCon, { marginTop: 15 }]}>
           <View style={customStyle.verifyIcon}>
             <Svg
@@ -151,8 +154,8 @@ const StoreDetails = ({
               </Defs>
             </Svg>
           </View>
-          <Text style={[customStyle.verifyText, { width: "90%" }]}>
-            {item?.postDescription}
+          <Text style={[customStyle.verifyText, { width: "80%" }]}>
+            {item?.postDescription || POitem?.postDescription}
           </Text>
         </View>
       )}

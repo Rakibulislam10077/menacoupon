@@ -2,6 +2,7 @@ import React from "react";
 import {
   Clipboard,
   Image,
+  Linking,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -11,6 +12,7 @@ import {
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 import { width } from "../../Utils/CustomWidthAndHeight";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { getExpireInAtDays } from "../../Utils/formattedDate";
 
 export default function HomeCouponItem(props) {
   const data = props?.route?.params;
@@ -116,6 +118,35 @@ export default function HomeCouponItem(props) {
             </TouchableOpacity>
           </View>
         </View>
+        <Text
+          style={{
+            color: "rgba(0, 0, 0, 0.40)",
+            fontSize: 16,
+            marginTop: 10,
+          }}
+        >
+          End in{" "}
+          <Text style={{ fontWeight: "700" }}>
+            {getExpireInAtDays(data?.expireDate)}
+          </Text>{" "}
+          days
+        </Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(data?.externalLink)}
+          style={{
+            backgroundColor: "#283d27",
+            width: "80%",
+            height: 50,
+            borderRadius: 30,
+            marginVertical: 20,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "#fff", fontWeight: "bold" }}>
+            Buy Now!
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

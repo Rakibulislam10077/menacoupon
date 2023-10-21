@@ -1,6 +1,7 @@
 import {
   Clipboard,
   Image,
+  Linking,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -10,6 +11,7 @@ import {
 import React from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
+import { getExpireInAtDays } from "../../Utils/formattedDate";
 
 const BottomSheet = ({
   item,
@@ -29,7 +31,7 @@ const BottomSheet = ({
     );
     Clipboard.setString(item?.couponCode);
   };
-
+  const externalLink = data?.externalLink;
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -122,7 +124,7 @@ const BottomSheet = ({
         </View>
         <View style={{ width: "80%", alignSelf: "center" }}>
           <Text style={styles.postDescription}>
-            {item?.postDescription || data?.postDescription}
+            {item?.description || data?.description}
           </Text>
         </View>
         <View style={styles.BScouponCodeCon}>
@@ -199,6 +201,35 @@ const BottomSheet = ({
             </TouchableOpacity>
           </View>
         </View>
+        <Text
+          style={{
+            color: "rgba(0, 0, 0, 0.40)",
+            fontSize: 16,
+            marginTop: 10,
+          }}
+        >
+          End in{" "}
+          <Text style={{ fontWeight: "700" }}>
+            {getExpireInAtDays(item?.expireDate || data?.expireDate)}
+          </Text>{" "}
+          days
+        </Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(data?.externalLink)}
+          style={{
+            backgroundColor: "#283d27",
+            width: "80%",
+            height: 50,
+            borderRadius: 30,
+            marginVertical: 20,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "#fff", fontWeight: "bold" }}>
+            Buy Now!
+          </Text>
+        </TouchableOpacity>
       </View>
     </BottomSheetModal>
   );
@@ -235,7 +266,7 @@ const styles = StyleSheet.create({
     width: 90,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "rgba(0,0,0,0.4)",
     elevation: 15,
@@ -253,7 +284,6 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   BSstorePt: {
-    marginBottom: 15,
     fontSize: 24,
     fontWeight: "700",
   },
@@ -269,7 +299,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderRadius: 50,
-    marginTop: 40,
+    marginTop: 30,
   },
   BScodeCT: {
     marginTop: -10,

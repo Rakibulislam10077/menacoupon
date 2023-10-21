@@ -6,11 +6,13 @@ import {
   View,
   Button,
   Linking,
+  Dimensions,
 } from "react-native";
 import { Svg, Path, G, Defs, ClipPath, Rect } from "react-native-svg";
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -27,30 +29,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Clipboard } from "react-native";
 import BottomSheet from "../shared/BottomSheet";
 import { FavoriteStoreContext } from "../../App";
-import { useFvStoreData, useStore } from "../../hooks/AllHooks";
+import {
+  useFvStoreData,
+  useGetStoreById,
+  useStore,
+} from "../../hooks/AllHooks";
 import { Alert } from "react-native";
 
 const ViewStore = (props, isFavourite) => {
   // data from coupon file in screen folder
   const item = props?.route?.params; //prop data
   const navigation = useNavigation(); // navigation
-  const [selected, setSelected] = React.useState(0); // selected component state
-  // const [isclicket, setIsClicket] = useState(false);
+  const [selected, setSelected] = React.useState(0);
   const [backDrop, setBackDrop] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
   const { favouriteData, setRefetch } = useContext(FavoriteStoreContext);
   const { fvStoreData } = useFvStoreData();
-  // const { data } = useStore();
 
-  // ref
   const bottomSheetModalRef = useRef(null);
-  // variables
-  const snapPoints = useMemo(() => ["25%", "70%"], []);
+  const snapPoints = useMemo(() => ["25%", "80%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     setBackDrop(true);
   }, []);
-  // callbacks
   const handleDismissModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
@@ -59,11 +60,16 @@ const ViewStore = (props, isFavourite) => {
     await fvStoreData(item);
     setRefetch((prev) => prev + 1);
   };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-        <View style={{ backgroundColor: "#fff", marginBottom: 10 }}>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderBottomWidth: 1,
+            borderBottomColor: "rgba(0,0,0,0.1)",
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
@@ -118,6 +124,17 @@ const ViewStore = (props, isFavourite) => {
                 {item?.storeName ||
                   item?.store?.storeName ||
                   item?.moreAboutPost?.store?.storeName}
+              </Text>
+              <Text
+                style={{
+                  color: "rgba(0,0,0,0.4)",
+                  fontSize: 16,
+                  marginTop: 5,
+                }}
+              >
+                {item?.description ||
+                  item?.store?.description ||
+                  item?.moreAboutPost?.store?.description}
               </Text>
             </View>
             {/* favourite_and_rating_container */}
@@ -269,6 +286,7 @@ const ViewStore = (props, isFavourite) => {
           <All
             handlePresentModalPress={handlePresentModalPress}
             setIsBottomSheetOpen={setIsBottomSheetOpen}
+            item={item}
             storeName={
               item?.storeName ||
               item?.store?.storeName ||

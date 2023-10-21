@@ -16,15 +16,16 @@ const Copons = ({
 
   const { couponData, isLoading } = useQueryCoupon(storeName, postType);
   return (
-    <ScrollView>
-      <View>
+    <ScrollView style={{ backgroundColor: "#fff" }}>
+      <View style={{ flex: 1, paddingBottom: 100, paddingHorizontal: 20 }}>
         {isLoading ? (
           <ActivityIndicator style={{ marginTop: 60 }} />
         ) : couponData.length === 0 ? (
           <View
             style={{
-              height: 400,
-              width: width,
+              height: 320,
+              width: "90%",
+              alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
             }}

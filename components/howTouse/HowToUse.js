@@ -1,10 +1,9 @@
 import { Image, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useGetStoreById, useStore } from "../../hooks/AllHooks";
+import { useGetStoreById } from "../../hooks/AllHooks";
 import { ScrollView } from "react-native-gesture-handler";
-import { width } from "../../Utils/CustomWidthAndHeight";
 
-const HowToUse = ({ item }) => {
+const HowToUse = ({ item, data }) => {
   const [store, setStore] = useState({});
   const { getStoreById } = useGetStoreById();
   useEffect(() => {
@@ -14,6 +13,7 @@ const HowToUse = ({ item }) => {
     };
     handleGetStoreById();
   }, []);
+  console.log(data);
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View

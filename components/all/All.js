@@ -6,23 +6,24 @@ import { useQueryCoupon } from "../../hooks/AllHooks";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 import { width } from "../../Utils/CustomWidthAndHeight";
 
-const All = ({ storeName, handlePresentModalPress, setIsBottomSheetOpen }) => {
+const All = ({
+  storeName,
+  handlePresentModalPress,
+  setIsBottomSheetOpen,
+  item,
+}) => {
   const { couponData, isLoading } = useQueryCoupon(storeName, "");
   return (
-    <ScrollView>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    <ScrollView style={{ backgroundColor: "#fff", flex: 1 }}>
+      <View style={{ flex: 1, paddingBottom: 100, paddingHorizontal: 20 }}>
         {isLoading ? (
-          <ActivityIndicator style={{ marginTop: 60 }} />
+          <ActivityIndicator style={{ marginTop: 50 }} />
         ) : couponData.length === 0 ? (
           <View
             style={{
-              height: 400,
-              width: width,
+              height: 320,
+              width: "90%",
+              alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
             }}

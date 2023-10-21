@@ -25,6 +25,9 @@ import HomeCouponItem from "../components/homeBestCouponItem/HomeCouponItem";
 import { useContact } from "../hooks/AllHooks";
 import { Alert } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Account from "../Screens/Account";
+import TermsAndCondition from "../components/TermsAndCondition/TermsAndCondition";
+import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 // import { getSelectedCountry } from "../Utils/getSelectedCountry";
 
 const Stack = createNativeStackNavigator();
@@ -323,53 +326,38 @@ const HomeScreen = () => {
             options={{
               tabBarIcon: ({ focused }) => {
                 return (
-                  <TouchableOpacity
-                    onPress={() => handleFavouritAlert()}
+                  <View
                     style={{ alignItems: "center", justifyContent: "center" }}
                   >
                     {focused ? (
-                      // <Svg
-                      //   width="20"
-                      //   height="21"
-                      //   viewBox="0 0 20 20"
-                      //   fill="none"
-                      //   xmlns="http://www.w3.org/2000/svg"
-                      // >
-                      //   <G clip-path="url(#clip0_106_1859)">
-                      //     <Path
-                      //       d="M5.81583 2.56176C6.55338 2.43609 7.30973 2.47754 8.02913 2.68307C8.74853 2.88859 9.41263 3.25294 9.97249 3.74926L10.0033 3.77676L10.0317 3.75176C10.566 3.28284 11.1942 2.93325 11.8743 2.72633C12.5544 2.5194 13.2709 2.45989 13.9758 2.55176L14.1808 2.58176C15.0694 2.73518 15.9 3.12605 16.5845 3.71298C17.2691 4.29991 17.7822 5.06105 18.0695 5.91579C18.3568 6.77053 18.4076 7.68706 18.2166 8.56832C18.0255 9.44958 17.5997 10.2628 16.9842 10.9218L16.8342 11.0759L16.7942 11.1101L10.5858 17.2593C10.4426 17.4011 10.2527 17.4861 10.0516 17.4987C9.85038 17.5112 9.65146 17.4505 9.49166 17.3276L9.41333 17.2593L3.16916 11.0743C2.50768 10.4306 2.03724 9.61649 1.80996 8.72198C1.58268 7.82747 1.60741 6.88751 1.88143 6.00619C2.15544 5.12487 2.66804 4.33659 3.36246 3.72865C4.05688 3.12071 4.90602 2.71684 5.81583 2.56176Z"
-                      //       fill="#283D27"
-                      //     />
-                      //   </G>
-                      // </Svg>
-                      <></>
-                    ) : (
                       <Svg
-                        width="21"
+                        width="20"
                         height="20"
-                        viewBox="0 0 21 20"
+                        viewBox="0 0 20 20"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <G clip-path="url(#clip0_783_653)">
-                          <Path
-                            d="M16.75 10.4766L10.5 16.6666L4.25 10.4766C3.83775 10.0754 3.51303 9.59325 3.29629 9.06043C3.07954 8.52762 2.97546 7.9557 2.99061 7.38068C3.00576 6.80567 3.1398 6.24002 3.38429 5.71935C3.62879 5.19868 3.97844 4.73428 4.41124 4.35539C4.84403 3.97649 5.35058 3.69131 5.89901 3.5178C6.44743 3.3443 7.02583 3.28622 7.5978 3.34724C8.16977 3.40825 8.72291 3.58703 9.22239 3.87233C9.72187 4.15762 10.1569 4.54324 10.5 5.0049C10.8446 4.54659 11.2801 4.16434 11.7792 3.88207C12.2784 3.59981 12.8304 3.42361 13.4008 3.3645C13.9711 3.3054 14.5476 3.36465 15.094 3.53856C15.6404 3.71247 16.145 3.9973 16.5763 4.37521C17.0076 4.75311 17.3562 5.21597 17.6003 5.73481C17.8445 6.25365 17.9789 6.81731 17.9953 7.39049C18.0116 7.96368 17.9094 8.53406 17.6951 9.06594C17.4808 9.59783 17.1591 10.0798 16.75 10.4816"
-                            stroke="#283D27"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </G>
-                        <Defs>
-                          <ClipPath id="clip0_783_653">
-                            <Rect
-                              width="20"
-                              height="20"
-                              fill="white"
-                              transform="translate(0.5)"
-                            />
-                          </ClipPath>
-                        </Defs>
+                        <Path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M6.25 5C6.25 4.00544 6.64509 3.05161 7.34835 2.34835C8.05161 1.64509 9.00544 1.25 10 1.25C10.9946 1.25 11.9484 1.64509 12.6516 2.34835C13.3549 3.05161 13.75 4.00544 13.75 5C13.75 5.99456 13.3549 6.94839 12.6516 7.65165C11.9484 8.35491 10.9946 8.75 10 8.75C9.00544 8.75 8.05161 8.35491 7.34835 7.65165C6.64509 6.94839 6.25 5.99456 6.25 5ZM3.12583 16.7542C3.15393 14.9496 3.89053 13.2284 5.17663 11.9622C6.46273 10.6959 8.19518 9.98621 10 9.98621C11.8048 9.98621 13.5373 10.6959 14.8234 11.9622C16.1095 13.2284 16.8461 14.9496 16.8742 16.7542C16.8763 16.8757 16.843 16.9951 16.7784 17.098C16.7137 17.2009 16.6204 17.2826 16.51 17.3333C14.4676 18.2698 12.2468 18.753 10 18.75C7.67833 18.75 5.4725 18.2433 3.49 17.3333C3.37957 17.2826 3.28631 17.2009 3.22163 17.098C3.15696 16.9951 3.12366 16.8757 3.12583 16.7542Z"
+                          fill="#283D27"
+                        />
+                      </Svg>
+                    ) : (
+                      <Svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M13.125 5C13.125 5.8288 12.7958 6.62366 12.2097 7.20971C11.6237 7.79576 10.8288 8.125 10 8.125C9.17122 8.125 8.37636 7.79576 7.79031 7.20971C7.20426 6.62366 6.87502 5.8288 6.87502 5C6.87502 4.1712 7.20426 3.37634 7.79031 2.79029C8.37636 2.20424 9.17122 1.875 10 1.875C10.8288 1.875 11.6237 2.20424 12.2097 2.79029C12.7958 3.37634 13.125 4.1712 13.125 5ZM3.75085 16.765C3.77763 15.1253 4.4478 13.5618 5.61684 12.4117C6.78587 11.2616 8.36009 10.6171 10 10.6171C11.6399 10.6171 13.2142 11.2616 14.3832 12.4117C15.5522 13.5618 16.2224 15.1253 16.2492 16.765C14.2887 17.664 12.1568 18.1279 10 18.125C7.77002 18.125 5.65335 17.6383 3.75085 16.765Z"
+                          stroke="#7F7F7F"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
                       </Svg>
                     )}
                     <Text
@@ -379,15 +367,15 @@ const HomeScreen = () => {
                         fontSize: 12,
                       }}
                     >
-                      Favorite
+                      Account
                     </Text>
-                  </TouchableOpacity>
+                  </View>
                 );
               },
               headerShown: false,
             }}
-            name="Favourite"
-            component={Favorite}
+            name="Account"
+            component={Account}
           />
         }
         {/* {userInfo ? (
@@ -632,6 +620,16 @@ const Navigator = () => {
         options={{ headerShown: false }}
         name="HomeCouponItem"
         component={HomeCouponItem}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="TermsAndCondition"
+        component={TermsAndCondition}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
       />
       {/* <Stack.Screen
         options={{ headerShown: false }}

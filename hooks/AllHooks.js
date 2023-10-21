@@ -16,6 +16,7 @@ export const useStore = () => {
   const [err, setErr] = useState(null);
   const [refetch, setRefetch] = useState(0);
 
+
   useEffect(() => {
     const getCountry = async () => {
       const userStore = await AsyncStorage.getItem("couponCountry");
@@ -171,20 +172,28 @@ export const useQueryCoupon = (name, type) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const url = `${mainURL}/api/v1/post/?storeName=${name}&postType=${type}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setCouponData(data?.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-      });
+    const getCountry = async () => {
+      const userCountry = await AsyncStorage.getItem("couponCountry");
+      return userCountry;
+    };
+    const getStoreByCountry = async () => {
+      const url = `${mainURL}/api/v1/post/?country=${await getCountry()}&storeName=${name}&postType=${type}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          setCouponData(data?.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setError(err);
+        });
+    };
+    getStoreByCountry();
   }, []);
-
   return { couponData, error, isLoading };
 };
+
+
 
 // ALL COUPON
 export const useAllcoupon = () => {

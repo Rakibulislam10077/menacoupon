@@ -6,13 +6,14 @@ export const customeStyle = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingHorizontal: 10,
   },
   iconAndTextCon: {
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 20,
-    height: "30%",
+    flex: 1,
   },
   locationIcon: {
     marginBottom: 10,
@@ -41,7 +42,7 @@ export const customeStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    height: "55%",
+    flex: 2,
     width: width,
     maxWidth: 600,
   },
@@ -65,10 +66,7 @@ export const customeStyle = StyleSheet.create({
     color: "rgba(0,0,0,0.8)",
   },
   btnCon: {
-    width: "100%",
-    marginBottom: 20,
-    position: "absolute",
-    bottom: "2%",
+    flex: 0.5,
   },
   useAppBtn: {
     height: 40,

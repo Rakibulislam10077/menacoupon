@@ -43,7 +43,7 @@ const Search = (props) => {
   // ref
   const bottomSheetModalRef = useRef(null);
   // variables
-  const snapPoints = useMemo(() => ["25%", "70%"], []);
+  const snapPoints = useMemo(() => ["25%", "80%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     setBackDrop(true);
@@ -264,7 +264,7 @@ const Search = (props) => {
             </View>
 
             <ScrollView>
-              <View style={{ paddingBottom: 450 }}>
+              <View style={{ flex: 1, paddingBottom: 500 }}>
                 {searchedData?.posts?.data.map((item) => (
                   <StoreDetails
                     handlePresentModalPress={handlePresentModalPress}

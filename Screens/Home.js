@@ -28,7 +28,9 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getExpireInAtDays, getUKFormatDate } from "../Utils/formattedDate";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { width } from "../Utils/CustomWidthAndHeight";
 
+const cartWidth = Dimensions.get("window").width;
 const Home = () => {
   const navigation = useNavigation();
   const carouselWidth = Dimensions.get("screen").width;
@@ -102,15 +104,27 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* top header */}
-        <View style={{ backgroundColor: "#fff", marginBottom: 10 }}>
-          <View style={{ flexDirection: "row", width: "100%" }}>
-            <View style={{ marginTop: 40, paddingLeft: 14, paddingRight: 20 }}>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            marginBottom: 5,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+              marginBottom: 15,
+            }}
+          >
+            <View style={{ marginTop: 20, paddingLeft: 14, paddingRight: 20 }}>
               <Text
                 style={{
                   fontSize: 24,
                   fontWeight: "700",
                   color: "black",
-                  marginBottom: 15,
+                  marginBottom: 5,
                 }}
               >
                 Mena Coupon
@@ -125,6 +139,39 @@ const Home = () => {
                 Enjoy the best buying experience with discount
               </Text>
             </View>
+            <TouchableOpacity
+              style={styles.searchButton}
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate("Search")}
+            >
+              <View style={{ opacity: 0.5 }}>
+                <Svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                  <G clip-path="url(#clip0_106_1688)">
+                    <Path
+                      d="M17.5 17.5L12.5 12.5"
+                      stroke="black"
+                      stroke-opacity="0.5"
+                      stroke-width="0.833333"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <Path
+                      d="M2.5 8.33333C2.5 9.09938 2.65088 9.85792 2.94404 10.5657C3.23719 11.2734 3.66687 11.9164 4.20854 12.4581C4.75022 12.9998 5.39328 13.4295 6.10101 13.7226C6.80875 14.0158 7.56729 14.1667 8.33333 14.1667C9.09938 14.1667 9.85792 14.0158 10.5657 13.7226C11.2734 13.4295 11.9164 12.9998 12.4581 12.4581C12.9998 11.9164 13.4295 11.2734 13.7226 10.5657C14.0158 9.85792 14.1667 9.09938 14.1667 8.33333C14.1667 7.56729 14.0158 6.80875 13.7226 6.10101C13.4295 5.39328 12.9998 4.75022 12.4581 4.20854C11.9164 3.66687 11.2734 3.23719 10.5657 2.94404C9.85792 2.65088 9.09938 2.5 8.33333 2.5C7.56729 2.5 6.80875 2.65088 6.10101 2.94404C5.39328 3.23719 4.75022 3.66687 4.20854 4.20854C3.66687 4.75022 3.23719 5.39328 2.94404 6.10101C2.65088 6.80875 2.5 7.56729 2.5 8.33333Z"
+                      stroke="black"
+                      stroke-opacity="0.5"
+                      stroke-width="0.833333"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </G>
+                  <Defs>
+                    <ClipPath id="clip0_106_1688">
+                      <Rect width="20" height="20" fill="white" />
+                    </ClipPath>
+                  </Defs>
+                </Svg>
+              </View>
+            </TouchableOpacity>
             {/* ============================== reset country ======================== */}
 
             {/* <TouchableOpacity
@@ -198,71 +245,11 @@ const Home = () => {
               </TouchableOpacity> */}
           </View>
           {/* this is searchbar */}
-          <TouchableOpacity
-            style={{
-              paddingLeft: 22,
-              borderWidth: 2,
-              borderColor: "#E6E6E6",
-              height: 50,
-              width: "90%",
-              alignSelf: "center",
-              borderRadius: 40,
-              marginTop: 30,
-              marginBottom: 20,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("Search")}
-          >
-            <View style={{ opacity: 0.5 }}>
-              <Svg width="24" height="24" viewBox="0 0 20 20" fill="none">
-                <G clip-path="url(#clip0_106_1688)">
-                  <Path
-                    d="M17.5 17.5L12.5 12.5"
-                    stroke="black"
-                    stroke-opacity="0.5"
-                    stroke-width="0.833333"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <Path
-                    d="M2.5 8.33333C2.5 9.09938 2.65088 9.85792 2.94404 10.5657C3.23719 11.2734 3.66687 11.9164 4.20854 12.4581C4.75022 12.9998 5.39328 13.4295 6.10101 13.7226C6.80875 14.0158 7.56729 14.1667 8.33333 14.1667C9.09938 14.1667 9.85792 14.0158 10.5657 13.7226C11.2734 13.4295 11.9164 12.9998 12.4581 12.4581C12.9998 11.9164 13.4295 11.2734 13.7226 10.5657C14.0158 9.85792 14.1667 9.09938 14.1667 8.33333C14.1667 7.56729 14.0158 6.80875 13.7226 6.10101C13.4295 5.39328 12.9998 4.75022 12.4581 4.20854C11.9164 3.66687 11.2734 3.23719 10.5657 2.94404C9.85792 2.65088 9.09938 2.5 8.33333 2.5C7.56729 2.5 6.80875 2.65088 6.10101 2.94404C5.39328 3.23719 4.75022 3.66687 4.20854 4.20854C3.66687 4.75022 3.23719 5.39328 2.94404 6.10101C2.65088 6.80875 2.5 7.56729 2.5 8.33333Z"
-                    stroke="black"
-                    stroke-opacity="0.5"
-                    stroke-width="0.833333"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </G>
-                <Defs>
-                  <ClipPath id="clip0_106_1688">
-                    <Rect width="20" height="20" fill="white" />
-                  </ClipPath>
-                </Defs>
-              </Svg>
-            </View>
-
-            <Text style={{ marginLeft: 20, opacity: 0.5 }}>
-              Search for stores
-            </Text>
-          </TouchableOpacity>
         </View>
 
         {/* this is top stores section */}
 
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#fff",
-            paddingLeft: 20,
-            paddingTop: 20,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingRight: 20,
-          }}
-        >
+        <View style={styles.seeAllStoreContainer}>
           <Text style={{ color: "#000", fontSize: 18 }}>Top Stores</Text>
           <TouchableOpacity onPress={() => navigation.navigate("Store")}>
             <Text style={{ color: "#283D27", fontSize: 12 }}>See All</Text>
@@ -272,15 +259,12 @@ const Home = () => {
         <View
           style={{
             backgroundColor: "#fff",
-            paddingBottom: 20,
-            paddingLeft: 20,
+            paddingLeft: 10,
           }}
         >
           <View
             style={{
-              height: 180,
-              alignItems: "center",
-              justifyContent: "center",
+              height: 110,
             }}
           >
             {loadData ? (
@@ -299,29 +283,34 @@ const Home = () => {
                     onPress={() =>
                       navigation.navigate("ViewStore", { ...item })
                     }
-                    style={[
-                      item?.storeName.length <= 11
-                        ? [styles.topStoersItem, { width: 150 }]
-                        : styles.topStoersItem,
-                    ]}
                   >
-                    <View style={styles.topStoersItemImgCon}>
+                    {/* <View style={styles.topStoersItemImgCon}> */}
+                    <View style={[[styles.topStoersItem]]}>
                       <Image
+                        resizeMode="contain"
                         style={styles.topStoresItemImg}
                         source={{ uri: item?.photoURL }}
                       />
                     </View>
-                    <View style={styles.topStoersItemStrNameCon}>
+                    {/* </View> */}
+                    {/* <View style={styles.topStoersItemStrNameCon}>
                       <Text style={styles.topStoersItemStrName}>
                         {item?.storeName}
                       </Text>
                     </View>
                     <Divider style={styles.topstoredivider} />
-                    <View>
-                      <Text style={styles.topStorePostType}>
-                        {item?.postType}
-                      </Text>
-                    </View>
+                    <Text style={styles.topStoreTotalPosts}>
+                      {item?.totalPosts} offers
+                    </Text> */}
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                        color: "rgba(0,0,0,0.6)",
+                        marginTop: 4,
+                      }}
+                    >
+                      {item?.storeName?.slice(0, 9)}
+                    </Text>
                   </TouchableOpacity>
                 )}
               />
@@ -347,21 +336,18 @@ const Home = () => {
             useScrollView={true}
           />
           <Pagination
-            containerStyle={{ paddingTop: 5, paddingBottom: 14 }}
+            containerStyle={{
+              paddingTop: 0,
+              paddingBottom: 10,
+            }}
             dotsLength={carousels.length}
             activeDotIndex={index}
             carouselRef={isCarousel}
-            dotStyle={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.92)",
-            }}
+            dotStyle={styles.carouselDot}
             inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
+            inactiveDotScale={1}
             tappableDots={true}
-            inactiveDotStyle={{ width: 10, height: 10 }}
+            inactiveDotStyle={{ width: 6, height: 6 }}
           />
         </View>
         {/* this is best coupon section */}
@@ -372,6 +358,7 @@ const Home = () => {
               paddingHorizontal: 20,
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <Text style={{ fontSize: 18 }}>Best Coupons</Text>
@@ -379,25 +366,33 @@ const Home = () => {
               <Text style={{ fontSize: 12, color: "#283D27" }}>See All</Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 20,
-              paddingTop: 30,
-              justifyContent: "center",
-            }}
-          >
+          <View style={styles.cartContainer}>
             {loadData ? (
-              <ActivityIndicator />
+              <View
+                style={{
+                  height: 50,
+                  width: "95%",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                }}
+              >
+                <ActivityIndicator
+                  size={"small"}
+                  style={{ alignSelf: "center" }}
+                />
+              </View>
             ) : allData.length === 0 ? (
               <View
                 style={{
                   height: 180,
+                  width: "95%",
                   justifyContent: "center",
+                  alignSelf: "center",
                 }}
               >
-                <Text style={{ color: "#797979" }}>empty data</Text>
+                <Text style={{ color: "#797979", alignSelf: "center" }}>
+                  empty data
+                </Text>
               </View>
             ) : (
               allData?.slice(0, 6).map((data, index) => (
@@ -443,7 +438,7 @@ const Home = () => {
                       }
                     >
                       <View style={[styles.topLayer]}>
-                        <Text style={styles.topLayerText}>show code</Text>
+                        <Text style={styles.topLayerText}>Show Code</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -470,26 +465,50 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  searchButton: {
+    borderWidth: 2,
+    borderColor: "#E6E6E6",
+    height: 45,
+    width: 45,
+    borderRadius: 50,
+    marginTop: 20,
+    marginRight: 10,
+    // marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  seeAllStoreContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingLeft: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingRight: 20,
+    paddingTop: 10,
+  },
   topStoersItem: {
     borderWidth: 1,
-    borderRadius: 15,
-    marginRight: 20,
+    marginHorizontal: 10,
     marginTop: 20,
     borderColor: "#E6E6E6",
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
-  topStoersItemImgCon: {
-    backgroundColor: "#fff",
-    width: "100%",
+    width: 50,
     height: 50,
-    alignSelf: "center",
+    borderRadius: 50,
+    padding: 5,
+    // alignContent: "center",
+    // justifyContent: "center",
   },
+  // topStoersItemImgCon: {
+  //   backgroundColor: "red",
+  //   width: "100%",
+  //   height: 50,
+  //   alignSelf: "center",
+  // },
   topStoresItemImg: {
-    width: "50%",
-    height: "100%",
-    alignSelf: "center",
-    borderRadius: 5,
+    width: "99%",
+    height: "99%",
+    borderRadius: 50,
   },
   topStoersItemStrNameCon: {
     width: "100%",
@@ -506,25 +525,41 @@ const styles = StyleSheet.create({
     backgroundColor: "#797979",
     opacity: 0.2,
   },
-  topStorePostType: {
+  topStoreTotalPosts: {
     fontSize: 14,
-    color: "#000",
-    opacity: 0.5,
+    color: "rgba(0,0,0,0.4)",
     alignSelf: "center",
   },
   carouselContainer: {
-    paddingTop: 25,
+    paddingTop: 15,
     flex: 1,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
-    width: "60%",
-    // eslint-disable-next-line no-dupe-keys
     alignSelf: "center",
+    height: 250,
+    backgroundColor: "#ffffff",
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  carouselDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
+  },
+  cartContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    rowGap: 15,
+    paddingTop: 30,
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    width: width,
   },
   couponCartInHome: {
-    minWidth: 150,
-    maxWidth: 230,
+    width: cartWidth < 400 ? 130 : 180,
     maxHeight: 290,
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -535,6 +570,7 @@ const styles = StyleSheet.create({
     shadowColor: "gray",
     padding: 5,
     paddingBottom: 10,
+    justifyContent: "space-around",
   },
   imgAndNameMainCon: {
     backgroundColor: "rgba(154, 134, 121, 0.05)",

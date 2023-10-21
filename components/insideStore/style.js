@@ -1,15 +1,20 @@
-import { StyleSheet } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
+const storeCartWidth = Dimensions.get("window").width;
 export const customStyle_for_insideStore = StyleSheet.create({
   store: {
-    minWidth: 150,
-    maxWidth: 215,
-    height: 220,
+    width: storeCartWidth < 400 ? 120 : 180,
+    height: 190,
     backgroundColor: "#fff",
-    borderRadius: 20,
-    shadowColor: "#797979",
-    elevation: 40,
+    shadowColor: "rgba(0,0,0,0.8)",
     padding: 20,
+    borderRadius: 12,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 10,
   },
   imgContainer: {
     width: "100%",

@@ -32,6 +32,7 @@ import { FavoriteStoreContext } from "../../App";
 import {
   useFvStoreData,
   useGetStoreById,
+  useGetStoreByStoreName,
   useStore,
 } from "../../hooks/AllHooks";
 import { Alert } from "react-native";
@@ -45,6 +46,9 @@ const ViewStore = (props, isFavourite) => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
   const { favouriteData, setRefetch } = useContext(FavoriteStoreContext);
   const { fvStoreData } = useFvStoreData();
+  const [store, setStore] = useState({});
+  const { getStoreById } = useGetStoreById();
+  const { getStoreByStoreName } = useGetStoreByStoreName();
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ["25%", "80%"], []);
@@ -56,17 +60,27 @@ const ViewStore = (props, isFavourite) => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
-  const addOrRemoveFav = async (item) => {
-    await fvStoreData(item);
-    setRefetch((prev) => prev + 1);
-  };
+  useEffect(() => {
+    const handleGetStoreById = async () => {
+      const fetchedStore = item?.store?.storeName
+        ? await getStoreByStoreName(item?.store?.storeName)
+        : await getStoreById(item?._id);
+      setStore(fetchedStore);
+    };
+    handleGetStoreById();
+  }, []);
+
+  // const addOrRemoveFav = async (item) => {
+  //   await fvStoreData(item);
+  //   setRefetch((prev) => prev + 1);
+  // };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <View
           style={{
             backgroundColor: "#fff",
-            borderBottomWidth: 1,
+            borderBottomWidth: 10,
             borderBottomColor: "rgba(0,0,0,0.1)",
           }}
         >
@@ -111,6 +125,7 @@ const ViewStore = (props, isFavourite) => {
             <TouchableOpacity style={[customStyle.storeImgCon]}>
               <Image
                 style={{ width: "80%", height: 50, borderRadius: 5 }}
+                resizeMode="contain"
                 source={{
                   uri:
                     item?.photoURL ||
@@ -132,9 +147,12 @@ const ViewStore = (props, isFavourite) => {
                   marginTop: 5,
                 }}
               >
-                {item?.description ||
-                  item?.store?.description ||
-                  item?.moreAboutPost?.store?.description}
+                {
+                  store?.data?.description
+                  // item?.description ||
+                  // item?.store?.description ||
+                  // item?.moreAboutPost?.store?.description
+                }
               </Text>
             </View>
             {/* favourite_and_rating_container */}
@@ -150,7 +168,10 @@ const ViewStore = (props, isFavourite) => {
               <TouchableOpacity
                 // onPress={() => addOrRemoveFav(item)}
                 onPress={() => {
-                  return Alert.alert("coming soon");
+                  Alert.alert(
+                    "Coming soon",
+                    "Insha-allah, Very soon we will launch V:1.0.1 include so many features. \n \nThank You"
+                  );
                 }}
                 style={customStyle.startCon}
               >
@@ -318,13 +339,14 @@ const ViewStore = (props, isFavourite) => {
             postType="deal"
           />
         ) : (
-          <HowToUse item={item} />
+          <HowToUse item={store} />
         )}
         {/* bottom visit button container */}
         <View style={customStyle.bottomBtnForVisit}>
           <View style={customStyle.imgAndTextCon}>
             <Image
               style={customStyle.bttmBtnImg}
+              resizeMode="contain"
               source={{
                 uri:
                   item?.photoURL ||

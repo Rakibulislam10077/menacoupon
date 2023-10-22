@@ -17,56 +17,56 @@ export default function PrivacyPolicy() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <ScrollView>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            padding: 20,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <View>
-            <TouchableOpacity
-              style={{ flexDirection: "row" }}
-              onPress={() => navigation.goBack()}
+      <View
+        style={{
+          backgroundColor: "#fff",
+          padding: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <TouchableOpacity
+            style={{ flexDirection: "row" }}
+            onPress={() => navigation.goBack()}
+          >
+            <Svg
+              width="30"
+              height="30"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <Svg
-                width="30"
-                height="30"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <G clip-path="url(#clip0_106_1830)">
-                  <Path
-                    d="M12.5 5L7.5 10L12.5 15"
-                    stroke="black"
-                    stroke-width="0.833333"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </G>
-                <Defs>
-                  <ClipPath id="clip0_106_1830">
-                    <Rect width="20" height="20" fill="white" />
-                  </ClipPath>
-                </Defs>
-              </Svg>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "700",
-                }}
-              >
-                Back
-              </Text>
-            </TouchableOpacity>
-          </View>
+              <G clip-path="url(#clip0_106_1830)">
+                <Path
+                  d="M12.5 5L7.5 10L12.5 15"
+                  stroke="black"
+                  stroke-width="0.833333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </G>
+              <Defs>
+                <ClipPath id="clip0_106_1830">
+                  <Rect width="20" height="20" fill="white" />
+                </ClipPath>
+              </Defs>
+            </Svg>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "700",
+              }}
+            >
+              Back
+            </Text>
+          </TouchableOpacity>
         </View>
-        <Divider style={{ marginBottom: 20 }} />
-        <View style={{ paddingHorizontal: 10 }}>
+      </View>
+      <Divider />
+      <ScrollView>
+        <View style={{ paddingHorizontal: 10, flex: 1, paddingBottom: 100 }}>
           <View>
             <Text
               style={{ fontSize: 24, fontWeight: "600", marginVertical: 10 }}

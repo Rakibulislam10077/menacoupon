@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,56 +16,56 @@ export default function TermsAndCondition() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <ScrollView>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            padding: 20,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <View>
-            <TouchableOpacity
-              style={{ flexDirection: "row" }}
-              onPress={() => navigation.goBack()}
+      <View
+        style={{
+          backgroundColor: "#fff",
+          padding: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <TouchableOpacity
+            style={{ flexDirection: "row" }}
+            onPress={() => navigation.goBack()}
+          >
+            <Svg
+              width="30"
+              height="30"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <Svg
-                width="30"
-                height="30"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <G clip-path="url(#clip0_106_1830)">
-                  <Path
-                    d="M12.5 5L7.5 10L12.5 15"
-                    stroke="black"
-                    stroke-width="0.833333"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </G>
-                <Defs>
-                  <ClipPath id="clip0_106_1830">
-                    <Rect width="20" height="20" fill="white" />
-                  </ClipPath>
-                </Defs>
-              </Svg>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "700",
-                }}
-              >
-                Back
-              </Text>
-            </TouchableOpacity>
-          </View>
+              <G clip-path="url(#clip0_106_1830)">
+                <Path
+                  d="M12.5 5L7.5 10L12.5 15"
+                  stroke="black"
+                  stroke-width="0.833333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </G>
+              <Defs>
+                <ClipPath id="clip0_106_1830">
+                  <Rect width="20" height="20" fill="white" />
+                </ClipPath>
+              </Defs>
+            </Svg>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "700",
+              }}
+            >
+              Back
+            </Text>
+          </TouchableOpacity>
         </View>
-        <Divider style={{ marginBottom: 20 }} />
-        <View style={{ paddingHorizontal: 10 }}>
+      </View>
+      <Divider />
+      <ScrollView>
+        <View style={{ paddingHorizontal: 10, paddingBottom: 100 }}>
           <View>
             <Text style={styles.termsAndConditonText}>
               Terms and Conditions

@@ -6,8 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Rect, ClipPath, Defs, Path, G, Svg } from "react-native-svg";
 import StoreButton from "../../components/shared/StoreButton";
 import DealButton from "../shared/DealButton";
-import { getUKFormatDate } from "../../Utils/formattedDate";
+import { getExpireInAtDays, getUKFormatDate } from "../../Utils/formattedDate";
 import { useStore } from "../../hooks/AllHooks";
+import { style } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 
 const StoreDetails = ({
   POitem,
@@ -32,17 +33,20 @@ const StoreDetails = ({
           >
             <Image
               style={customStyle.cartImg}
+              resizeMode="contain"
               source={{ uri: item?.store?.photoURL || POitem?.store?.photoURL }}
             />
           </TouchableOpacity>
           <View style={customStyle.postTitleAndDateCon}>
-            <Text style={customStyle.postTitle}>
-              {item?.postTitle?.slice(0, 15) || POitem?.postTitle?.slice(0, 15)}
+            <Text numberOfLines={2} style={customStyle.postTitle}>
+              {item?.postTitle || POitem?.postTitle}
             </Text>
             <Text style={customStyle.exDate}>
-              {getUKFormatDate(
-                item?.expireDate?.slice(0, 15) || POitem?.expireDate
-              )}
+              End in{" "}
+              <Text style={{ fontWeight: "600" }}>
+                {getExpireInAtDays(item?.expireDate || POitem?.expireDate)}
+              </Text>{" "}
+              days
             </Text>
           </View>
         </View>
@@ -102,7 +106,7 @@ const StoreDetails = ({
               </Defs>
             </Svg>
           </View>
-          <Text style={customStyle.verifyText}>Coupon Code</Text>
+          <Text style={customStyle.verifyText}>Varified offer</Text>
         </View>
       ) : null}
 

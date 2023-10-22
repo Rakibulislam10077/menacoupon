@@ -28,6 +28,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Account from "../Screens/Account";
 import TermsAndCondition from "../components/TermsAndCondition/TermsAndCondition";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
+import { getItem } from "../Utils/asyncStorage";
 // import { getSelectedCountry } from "../Utils/getSelectedCountry";
 
 const Stack = createNativeStackNavigator();
@@ -311,7 +312,7 @@ const HomeScreen = () => {
                       fontSize: 12,
                     }}
                   >
-                    Coupon
+                    Offers
                   </Text>
                 </View>
               );
@@ -509,49 +510,28 @@ const HomeScreen = () => {
 };
 
 const Navigator = () => {
-  // const [country, setCountry] = useState(null);
-  const [isLaunched, setIsLaunched] = useState(true);
-  // const [selectedCountry, setSelectedCountry] = useState("");
-  // useEffect(() => {
-  //   AsyncStorage.setItem("country", null).then((value) => {
-  //     setCountry(value);
-  //   });
-  // }, []);
-
-  // const getSelectedCountry = (setchooseTheCountry) => {
-  //   AsyncStorage.getItem("couponCountry").then((value) => {
-  //     setchooseTheCountry(value);
-  //   });
-  // };
-
-  // getSelectedCountry();
+  const [showOnboarding, setShowOnboarding] = useState(null);
 
   useEffect(() => {
-    AsyncStorage.getItem("alreadyLaunched").then((value) => {
-      if (value === null) {
-        AsyncStorage.setItem("alreadyLaunched", "true");
-        setIsLaunched(true);
-      } else {
-        setIsLaunched(false);
-      }
-    });
-  }, []);
+    checkIfAlreadyOnborded();
+  });
+  const checkIfAlreadyOnborded = async () => {
+    let onboarded = await getItem("onboarded");
+    if (onboarded == 1) {
+      setShowOnboarding(false);
+    } else {
+      setShowOnboarding(true);
+    }
+  };
 
-  // get country form AsyncStorage for redeclare country
-  // useEffect(() => {
-  //   AsyncStorage.getItem("country").then((value) => {
-  //     if (value === null) {
-  //       AsyncStorage.setItem("country", "true");
-  //       setSelectedCountry(true);
-  //     } else {
-  //       setSelectedCountry(false);
-  //     }
-  //   });
-  // }, []);
+  if (showOnboarding == null) {
+    return null;
+  }
 
-  return (
-    <Stack.Navigator>
-      {/* {isLaunched && (
+  if (showOnboarding) {
+    return (
+      <Stack.Navigator>
+        {/* {isLaunched && (
         <Stack.Screen
           options={{ headerShown: false }}
           name="Onboard"
@@ -565,7 +545,89 @@ const Navigator = () => {
           component={ChooseCountry}
         />
       } */}
-      {isLaunched && (
+        {/* {
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Onboard"
+            component={Onboard}
+          />
+        } */}
+        {
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="ChooseCountry"
+            component={ChooseCountry}
+          />
+        }
+
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Search"
+          component={Search}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="TopStore"
+          component={TopStore}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ViewStore"
+          component={ViewStore}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Notifications"
+          component={Notifications}
+        />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="MyProfile"
+          component={MyProfile}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Favourite"
+          component={Favorite}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeCouponItem"
+          component={HomeCouponItem}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="TermsAndCondition"
+          component={TermsAndCondition}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+        />
+        {/* <Stack.Screen
+        options={{ headerShown: false }}
+        name="SignUp"
+        component={SignUp}
+      /> */}
+        {/* <Stack.Screen
+        promptAsync={promptAsync}
+        options={{ headerShown: false }}
+        name="Login"
+        component={Login}
+      /> */}
+      </Stack.Navigator>
+    );
+  } else {
+    return (
+      <Stack.Navigator>
+        {/* {isLaunched && (
         <Stack.Screen
           options={{ headerShown: false }}
           name="Onboard"
@@ -578,72 +640,87 @@ const Navigator = () => {
           name="ChooseCountry"
           component={ChooseCountry}
         />
-      }
+      } */}
+        {
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Onboard"
+            component={Onboard}
+          />
+        }
+        {
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="ChooseCountry"
+            component={ChooseCountry}
+          />
+        }
 
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="HomeScreen"
-        component={HomeScreen}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Search"
-        component={Search}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="TopStore"
-        component={TopStore}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ViewStore"
-        component={ViewStore}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Notifications"
-        component={Notifications}
-      />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="MyProfile"
-        component={MyProfile}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Favourite"
-        component={Favorite}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="HomeCouponItem"
-        component={HomeCouponItem}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="TermsAndCondition"
-        component={TermsAndCondition}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="PrivacyPolicy"
-        component={PrivacyPolicy}
-      />
-      {/* <Stack.Screen
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Search"
+          component={Search}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="TopStore"
+          component={TopStore}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ViewStore"
+          component={ViewStore}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Notifications"
+          component={Notifications}
+        />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="MyProfile"
+          component={MyProfile}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Favourite"
+          component={Favorite}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeCouponItem"
+          component={HomeCouponItem}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="TermsAndCondition"
+          component={TermsAndCondition}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+        />
+        {/* <Stack.Screen
         options={{ headerShown: false }}
         name="SignUp"
         component={SignUp}
       /> */}
-      {/* <Stack.Screen
+        {/* <Stack.Screen
         promptAsync={promptAsync}
         options={{ headerShown: false }}
         name="Login"
         component={Login}
       /> */}
-    </Stack.Navigator>
-  );
+      </Stack.Navigator>
+    );
+  }
 };
 
 export default Navigator;

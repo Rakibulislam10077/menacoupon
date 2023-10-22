@@ -46,6 +46,7 @@ export const InsideStore_and_favouriteStore = ({
       <View style={customStyle_for_insideStore.imgContainer}>
         <Image
           style={customStyle_for_insideStore.storeImg}
+          resizeMode="contain"
           source={{ uri: item?.photoURL || fvitem?.photoURL }}
         />
       </View>
@@ -55,7 +56,7 @@ export const InsideStore_and_favouriteStore = ({
         }}
         style={customStyle_for_insideStore.storeEmptyHeart}
       >
-        {isFavourite ? (
+        {/* {isFavourite ? (
           // {isFavourite || fvitem ? (
           // if store in favourite list then love icon will be
           <Svg
@@ -89,10 +90,10 @@ export const InsideStore_and_favouriteStore = ({
               stroke-linejoin="round"
             />
           </Svg>
-        )}
+        )} */}
       </TouchableOpacity>
       <Text style={customStyle_for_insideStore.storeName}>
-        {item?.storeName || fvitem?.storeName}
+        {item?.storeName?.slice(0, 15) || fvitem?.storeName?.slice(0, 15)}.
       </Text>
       <Divider style={{ height: 1, opacity: 0.7, marginTop: 15 }} />
       <Text

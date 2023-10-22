@@ -12,15 +12,20 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Divider } from "react-native-paper";
 import StoreDetails from "../components/storeDetails/StoreDetails";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import { useAllcoupon } from "../hooks/AllHooks";
 import BottomSheet from "../components/shared/BottomSheet";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Coupon = ({ navigation }) => {
-  const { allData, loadData, error } = useAllcoupon();
+  const { allData, loadData, error, setRefetch } = useAllcoupon();
   const [backDrop, setBackDrop] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
+  const [refreshing, setRefreshing] = React.useState(false);
 
   // ref
   const bottomSheetModalRef = useRef(null);
@@ -36,6 +41,14 @@ const Coupon = ({ navigation }) => {
   // callbacks
   const handleDismissModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefetch((prev) => prev + 1);
+    }, 2000);
   }, []);
 
   return (
@@ -87,7 +100,7 @@ const Coupon = ({ navigation }) => {
                 marginLeft: 22,
               }}
             >
-              Coupon codes
+              Offers
             </Text>
           </View>
           <TouchableOpacity
@@ -138,7 +151,11 @@ const Coupon = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <Divider style={{ width: "90%", alignSelf: "center" }} />
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <Text
             style={{
               fontSize: 16,
@@ -147,7 +164,7 @@ const Coupon = ({ navigation }) => {
               marginLeft: 20,
             }}
           >
-            All Coupon code
+            All Deals & Coupon codes
           </Text>
           <View
             style={{

@@ -2,8 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import Favorite from "../components/Favourite/Favorite";
 
-export const mainURL = "https://arabcoupon-mobile-app-server.vercel.app";
-
+export const mainURL = "https://arabcoupon-mobile-app-server.vercel.app/api/v1";
 
 async function getToken() {
   const token = await AsyncStorage.getItem("accessToken");
@@ -16,14 +15,13 @@ export const useStore = () => {
   const [err, setErr] = useState(null);
   const [refetch, setRefetch] = useState(0);
 
-
   useEffect(() => {
     const getCountry = async () => {
       const userStore = await AsyncStorage.getItem("couponCountry");
       return userStore;
     };
     const getStoreApi = async () => {
-      const url = `${mainURL}/api/v1/store/?country=${await getCountry()}`;
+      const url = `${mainURL}/store/?country=${await getCountry()}`;
       fetch(`${url}`)
         .then((res) => res.json())
         .then((data) => {
@@ -41,12 +39,21 @@ export const useStore = () => {
 
 export const useGetStoreById = () => {
   const getStoreById = async (id) => {
-    const res = await fetch(`${mainURL}/api/v1/store/${id}`);
+    const res = await fetch(`${mainURL}/store/${id}`);
     const data = await res.json();
 
     return data;
   };
   return { getStoreById };
+};
+export const useGetStoreByStoreName = () => {
+  const getStoreByStoreName = async (storeName) => {
+    const res = await fetch(`${mainURL}/store/name/${storeName}`);
+    const data = await res.json();
+
+    return data;
+  };
+  return { getStoreByStoreName };
 };
 
 // GLOBAL SEARCH (recieve from search.js)
@@ -55,16 +62,17 @@ export const useSearch = () => {
   const [error, setError] = useState(null); // handle error
   const [searchedData, setSearchedData] = useState([]);
   const [searchKey, setSearchKey] = useState(" ");
+  const [refetch, setRefetch] = useState(0);
 
   // const handleGlobalSearch = () => {
   useEffect(() => {
-    // const getCountry = async () => {
-    //   const userCountry = AsyncStorage.getItem("couponCountry");
-    //   return userCountry;
-    // };
+    const getCountry = async () => {
+      const userCountry = await AsyncStorage.getItem("couponCountry");
+      return userCountry;
+    };
 
     const getSearchApi = async () => {
-      const url = `${mainURL}/api/v1/post/search?searchTerm=${searchKey}`;
+      const url = `${mainURL}/post/search?country=${await getCountry()}&searchTerm=${searchKey}`;
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
@@ -77,7 +85,7 @@ export const useSearch = () => {
     };
     getSearchApi();
     // };
-  }, [searchKey]);
+  }, [searchKey, refetch]);
 
   return {
     searchedData,
@@ -85,6 +93,7 @@ export const useSearch = () => {
     setIsLoading,
     setSearchKey,
     error,
+    setRefetch,
     // handleGlobalSearch,
   };
 };
@@ -96,7 +105,7 @@ export const useNotification = () => {
   useEffect(() => {
     async function notification() {
       const token = await getToken();
-      fetch(`${mainURL}/api/v1/user/notification/`, {
+      fetch(`${mainURL}/user/notification/`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -124,7 +133,7 @@ export const useAllNotification = () => {
   useEffect(() => {
     async function get_notifications() {
       const token = await getToken();
-      fetch(`${mainURL}/api/v1/user/notification/all`, {
+      fetch(`${mainURL}/user/notification/all`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -150,16 +159,13 @@ export const useAllNotification = () => {
 export const useUpdateNotifacation = () => {
   const updateNotificationStatusById = async (id) => {
     const token = await getToken();
-    const res = await fetch(
-      `${mainURL}/api/v1/user/notification/readed/${id}`,
-      {
-        method: "put",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await fetch(`${mainURL}/user/notification/readed/${id}`, {
+      method: "put",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
     return await res.json();
   };
   return { updateNotificationStatusById };
@@ -177,7 +183,7 @@ export const useQueryCoupon = (name, type) => {
       return userCountry;
     };
     const getStoreByCountry = async () => {
-      const url = `${mainURL}/api/v1/post/?country=${await getCountry()}&storeName=${name}&postType=${type}`;
+      const url = `${mainURL}/post/?country=${await getCountry()}&storeName=${name}&postType=${type}`;
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
@@ -193,21 +199,20 @@ export const useQueryCoupon = (name, type) => {
   return { couponData, error, isLoading };
 };
 
-
-
 // ALL COUPON
 export const useAllcoupon = () => {
   const [allData, setAllData] = useState([]);
   const [loadData, setLoadData] = useState(true);
   const [error, setError] = useState(null);
   // const [country, setCountry] = useState('')
+  const [refetch, setRefetch] = useState(0);
   useEffect(() => {
     const getCountry = async () => {
       const userCountry = await AsyncStorage.getItem("couponCountry");
       return userCountry;
     };
     const getApi = async () => {
-      const url = `${mainURL}/api/v1/post?country=${await getCountry()}`;
+      const url = `${mainURL}/post?country=${await getCountry()}`;
       fetch(`${url}`)
         .then((response) => response.json())
         .then((data) => {
@@ -219,16 +224,17 @@ export const useAllcoupon = () => {
         });
     };
     getApi();
-  }, []);
+  }, [refetch]);
 
-  return { allData, loadData, error };
+  return { allData, loadData, error, setRefetch };
 };
 
 // FOR CAROUSEL
 export const useCarousel = () => {
   const [carousels, setCarousels] = useState([]);
+
   useEffect(() => {
-    fetch(`${mainURL}/api/v1/carousel/?country=ksa`)
+    fetch(`${mainURL}/carousel`)
       .then((res) => res.json())
       .then((data) => {
         setCarousels(data?.data?.carousel);
@@ -247,7 +253,7 @@ export const useFavouriteStore = () => {
   useEffect(() => {
     async function noti() {
       const token = await getToken();
-      fetch(`${mainURL}/api/v1/user/favourite/store`, {
+      fetch(`${mainURL}/user/favourite/store`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -276,7 +282,7 @@ export const useFavourtePost = () => {
   useEffect(() => {
     async function get_F_data() {
       const token = await getToken();
-      fetch(`${mainURL}/api/v1/user/favourite/post`, {
+      fetch(`${mainURL}/user/favourite/post`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -295,7 +301,7 @@ export const useFavourtePost = () => {
 export const useFvStoreData = () => {
   const fvStoreData = async (fvitem) => {
     const token = await getToken();
-    fetch(`${mainURL}/api/v1/user/favourite/store/${fvitem?._id}`, {
+    fetch(`${mainURL}/user/favourite/store/${fvitem?._id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -319,7 +325,7 @@ export const useUserInfo = () => {
     async function UData() {
       const token = await getToken();
       try {
-        const response = await fetch(`${mainURL}/api/v1/user/me`, {
+        const response = await fetch(`${mainURL}/user/me`, {
           method: "GET",
           headers: {
             "content-type": "application/json",
@@ -341,7 +347,7 @@ export const useUserInfo = () => {
 export const useUpdateUserInfo = () => {
   async function updateInfo(payload) {
     const token = await getToken();
-    fetch(`${mainURL}/api/v1/user/me`, {
+    fetch(`${mainURL}/user/me`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -358,7 +364,7 @@ export const useUpdateUserInfo = () => {
 // sign up for new user
 export const useSignUp = () => {
   const signUpNewUserData = async (payload) => {
-    const res = await fetch(`${mainURL}/api/v1/user/signup`, {
+    const res = await fetch(`${mainURL}/user/signup`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -374,7 +380,7 @@ export const useSignUp = () => {
 // login user
 export const useLogin = () => {
   const loginUser = async (payload) => {
-    const res = await fetch(`${mainURL}/api/v1/user/login`, {
+    const res = await fetch(`${mainURL}/user/login`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -391,7 +397,7 @@ export const useLogin = () => {
 export const useContact = () => {
   const [number, setNumber] = useState([]);
   useEffect(() => {
-    fetch(`${mainURL}/api/v1/contact`)
+    fetch(`${mainURL}/contact`)
       .then((res) => res.json())
       .then((data) => setNumber(data?.data?.contact?.contactNo, "from hooks"));
   });
@@ -422,7 +428,7 @@ export const useFavouriteItemsFromApi = () => {
     const getFavouriteItems = async () => {
       setFavouriteDatas(
         favouriteItems?.map((favouriteItemId) =>
-          fetch(`${mainURL}/api/v1/store/${favouriteItemId}`)
+          fetch(`${mainURL}/store/${favouriteItemId}`)
             .then((res) => res.json())
             .then((data) => {
               return data?.data;
@@ -437,7 +443,16 @@ export const useFavouriteItemsFromApi = () => {
   return { favouriteDatas };
 };
 
-
-
-
-
+export const useReabuildCount = () => {
+  const getRevealedCount = (id) => {
+    fetch(`${mainURL}/post/revealed/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => data);
+  };
+  return { getRevealedCount };
+};

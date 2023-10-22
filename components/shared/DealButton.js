@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
+import { useReabuildCount } from "../../hooks/AllHooks";
 
 const dealButton = ({
   handlePresentModalPress,
@@ -8,9 +9,11 @@ const dealButton = ({
   POitem,
   setIsBottomSheetOpen,
 }) => {
+  const { getRevealedCount } = useReabuildCount();
   const handleButton = () => {
     setIsBottomSheetOpen(data || POitem || item);
     handlePresentModalPress();
+    getRevealedCount(data?._id || POitem?._id || item?._id);
   };
 
   return (

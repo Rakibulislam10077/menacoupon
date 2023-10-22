@@ -1,7 +1,7 @@
 import { ActivityIndicator, Text, View } from "react-native";
 import React from "react";
 import StoreDetails from "../storeDetails/StoreDetails";
-import { ScrollView } from "react-native-gesture-handler";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useQueryCoupon } from "../../hooks/AllHooks";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 import { width } from "../../Utils/CustomWidthAndHeight";
@@ -13,8 +13,22 @@ const All = ({
   item,
 }) => {
   const { couponData, isLoading } = useQueryCoupon(storeName, "");
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <ScrollView style={{ backgroundColor: "#fff", flex: 1 }}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={{ backgroundColor: "#fff", flex: 1 }}
+    >
       <View style={{ flex: 1, paddingBottom: 100, paddingHorizontal: 20 }}>
         {isLoading ? (
           <ActivityIndicator style={{ marginTop: 50 }} />

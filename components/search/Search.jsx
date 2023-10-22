@@ -22,6 +22,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useSearch } from "../../hooks/AllHooks";
 import BottomSheet from "../shared/BottomSheet";
 import { height } from "../../Utils/CustomWidthAndHeight";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const Search = (props) => {
   const item = props?.route?.params;
@@ -32,11 +33,13 @@ const Search = (props) => {
     searchedData,
     error,
     isLoading,
+    setRefetch,
     setSearchKey,
     // handleGlobalSearch
   } = useSearch();
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
+  const [refreshing, setRefreshing] = React.useState(false);
   const navigation = useNavigation();
 
   // bottomsheet all function start here
@@ -51,6 +54,14 @@ const Search = (props) => {
   // callbacks
   const handleDismissModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefetch((prev) => prev + 1);
+    }, 2000);
   }, []);
 
   //this is top search item in global search
@@ -241,7 +252,7 @@ const Search = (props) => {
                   </View>
                   {
                     <FlatList
-                      data={searchedData?.stores}
+                      data={searchedData?.stores?.data}
                       horizontal
                       style={{ paddingLeft: 10 }}
                       showsHorizontalScrollIndicator={false}
@@ -263,7 +274,11 @@ const Search = (props) => {
               />
             </View>
 
-            <ScrollView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
               <View style={{ flex: 1, paddingBottom: 500 }}>
                 {searchedData?.posts?.data.map((item) => (
                   <StoreDetails

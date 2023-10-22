@@ -22,6 +22,9 @@ import {
   useAllcoupon,
   useStore,
   useCarousel,
+  mainURL,
+  useUserInfo,
+  useReabuildCount,
   // useNotification,
 } from "../hooks/AllHooks";
 import { useNavigation } from "@react-navigation/native";
@@ -29,6 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getExpireInAtDays, getUKFormatDate } from "../Utils/formattedDate";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { width } from "../Utils/CustomWidthAndHeight";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const cartWidth = Dimensions.get("window").width;
 const Home = () => {
@@ -41,6 +45,8 @@ const Home = () => {
   const isCarousel = React.useRef(null);
   const { allData } = useAllcoupon();
   const { data, loadData } = useStore();
+  const { setRefetch } = useStore();
+  const { getRevealedCount } = useReabuildCount();
   // const { notify } = useNotification();
   const { carousels } = useCarousel();
   const [countryPhotoURL, setCountryPhotoURL] = useState("");
@@ -68,6 +74,7 @@ const Home = () => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      setRefetch((prev) => prev + 1);
     }, 2000);
   }, []);
 
@@ -106,39 +113,98 @@ const Home = () => {
         {/* top header */}
         <View
           style={{
-            backgroundColor: "#fff",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between",
             marginBottom: 5,
+            flex: 1,
+            backgroundColor: "#fff",
+            paddingBottom: 10,
           }}
         >
           <View
             style={{
+              marginTop: 20,
+              paddingLeft: 14,
+              paddingRight: 20,
+              flex: 3.3,
               flexDirection: "row",
-              width: "100%",
-              justifyContent: "space-between",
-              marginBottom: 15,
+              alignItems: "center",
             }}
           >
-            <View style={{ marginTop: 20, paddingLeft: 14, paddingRight: 20 }}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: "700",
-                  color: "black",
-                  marginBottom: 5,
-                }}
-              >
-                Mena Coupon
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: "400",
-                  color: "#595959",
-                }}
-              >
-                Enjoy the best buying experience with discount
-              </Text>
-            </View>
+            <Svg
+              width="54"
+              height="54"
+              viewBox="0 0 486 386"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <Path
+                d="M263.45 24.5704L286.54 43.4104C283.24 47.0504 280.47 50.5404 278.25 53.6904L253.93 33.8404C251.44 31.8004 248.04 31.2904 244.85 32.4604L152.51 66.2304C150.68 66.9004 149.06 68.0804 147.82 69.6304L9.86016 242.44C8.17016 244.57 7.33018 247.17 7.52018 249.79C7.72018 252.41 8.90016 254.7 10.8602 256.27L161.16 376.34C163.13 377.92 165.64 378.57 168.22 378.17C170.81 377.78 173.17 376.39 174.87 374.26L219.91 317.82H228.82L181.26 377.41C174.46 385.93 162.54 387.74 154.67 381.45L7.30018 263.73C3.50018 260.68 1.19018 256.22 0.830176 251.15C0.460176 246.08 2.08017 241.02 5.37017 236.89L144.95 62.0504C147.36 59.0204 150.52 56.7404 154.07 55.4404L245.85 21.8704C252.05 19.6004 258.63 20.6104 263.45 24.5504V24.5704Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M337.52 96.3001L332.74 133.73L327.56 165.02L324.14 160.69H318.78L324.2 124.93L327.43 99.6701C327.85 96.3701 326.65 93.2201 324.22 91.2301L289.17 62.6301C291 59.4001 293.55 55.7301 296.86 51.8501L331.3 79.9601C336.03 83.8101 338.35 89.9301 337.53 96.3101L337.52 96.3001Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M276.02 62.9603C274.44 66.8003 274.03 70.4403 274.79 73.8403C276.44 81.1703 282.95 84.5703 283.22 84.7103L284.76 85.5003L286.97 75.5403L285.43 75.5603C283.87 75.5803 283.09 74.8603 282.9 73.2203C282.78 72.1303 282.95 70.7303 283.4 69.1003C286.76 56.8803 306.21 31.1203 342.36 17.2903C372.11 5.90028 382.82 8.00028 386.56 11.7603C389.73 14.9503 388.21 19.8303 388.04 20.3503C371.39 53.0003 332.99 67.7903 332.6 67.9403L330.3 68.8103L337.05 74.2003L337.76 73.9103C362.62 63.5803 381.69 43.3103 381.88 43.1003C393.36 30.8703 398.2 20.6203 396.26 12.6203C394.04 3.42027 383.76 0.910272 383.3 0.810272L383.01 0.780273C328.95 1.78027 291.13 38.5803 278.68 57.9003C277.58 59.6203 276.69 61.3003 276.01 62.9503L276.02 62.9603Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M319.62 99.2203L311.99 160.68H214.68V160.81H180.95L159.38 190.46L137.8 160.81H103.85V266.72H109.24C105.83 271.92 103.85 278.12 103.85 284.79C103.85 303.01 118.68 317.83 136.9 317.83H210.15L168.88 369.51C168.46 370.04 167.92 370.2 167.63 370.24C167.34 370.29 166.79 370.29 166.29 369.9L16.0001 249.84C16.0001 249.84 15.9301 249.76 15.8901 249.73L14.6001 248.72L15.7601 247.26C15.7601 247.26 15.7801 247.23 15.7901 247.21L153.77 74.3803C154 74.0903 154.3 73.8803 154.64 73.7503L246.98 39.9803C247.11 39.9303 247.23 39.9003 247.36 39.8903C247.85 39.8103 248.32 39.9403 248.69 40.2403L269.57 57.2903C269.53 57.3703 269.5 57.4403 269.46 57.5203C269.28 57.8803 269.1 58.2403 268.93 58.6003C260.14 62.5303 254.3 71.8703 254.99 81.5103C255.84 93.3003 266.04 101.44 277.73 99.6603C282.22 98.9803 286.43 96.9003 289.86 93.6803C290.08 93.4803 290.31 93.2603 290.52 93.0503L290.63 92.9503C294.06 89.4403 296.27 85.0703 297.07 80.4803C297.11 80.2603 297.16 80.0503 297.2 79.8303L319 97.6303C319.45 98.0003 319.67 98.5903 319.6 99.2103L319.62 99.2203Z"
+                fill="#EA8313"
+              />
+              <Path
+                d="M296.79 273.291C289.8 273.291 285.67 278.541 285.86 285.071C286 290.471 288.91 296.241 296.65 296.241C304.39 296.241 307.3 290.421 307.39 285.031C307.48 279.541 304.34 273.441 296.79 273.301V273.291Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M176.67 273.291C169.68 273.291 165.55 278.541 165.74 285.071C165.88 290.471 168.79 296.241 176.53 296.241C184.27 296.241 187.18 290.421 187.27 285.031C187.36 279.541 184.22 273.441 176.67 273.301V273.291Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M259.81 274.18H250.52V285.82H259.81C267.74 285.82 267.69 274.18 259.81 274.18Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M136.9 261.93C124.28 261.93 114.04 272.16 114.04 284.79C114.04 297.41 124.27 307.65 136.9 307.65H360.8L382.04 261.93H136.9ZM140.39 301.91C128.19 301.91 123.03 293.51 122.98 284.97C122.93 276.38 128.52 267.66 140.39 267.66C144.85 267.66 149.07 269.35 152.45 272.68L148.32 276.67C146.16 274.56 143.25 273.57 140.39 273.57C132.46 273.57 129.04 279.48 129.08 284.97C129.13 290.41 132.27 296.09 140.39 296.09C143.25 296.09 146.49 294.92 148.65 292.76L152.87 297.03C149.49 300.36 145.13 301.91 140.39 301.91ZM176.52 301.91C164.98 301.91 159.63 293.61 159.63 284.97C159.63 274.6 167.14 267.66 176.66 267.66C187.87 267.75 193.46 276.39 193.36 284.93C193.27 293.42 188.06 301.91 176.52 301.91ZM232.26 287.18C232.26 296.89 226.3 301.87 218.04 301.87C209.78 301.87 203.45 297.08 203.45 287.18V268.37H209.6V287.18C209.6 293.09 212.98 296.23 218.09 296.23C223.2 296.23 226.11 292.81 226.11 287.18V268.37H232.26V287.18ZM259.8 291.5H250.51V301.17H244.32V268.33C249.43 268.33 254.69 268.28 259.8 268.28C275.94 268.28 275.99 291.36 259.8 291.5ZM296.63 301.92C285.09 301.92 279.74 293.62 279.74 284.98C279.74 274.61 287.25 267.67 296.77 267.67C307.98 267.76 313.57 276.4 313.47 284.94C313.38 293.43 308.17 301.92 296.63 301.92ZM347.63 301.17L330.18 279.31V301.17H323.99V268.33H329.01L346.46 290.43V268.33H352.65V301.17H347.63Z"
+                fill="#24B098"
+              />
+              <Path
+                d="M204.59 256.53V170.99H186.14L159.38 207.77L132.62 170.99H114.04V256.53H130.17V194.33L157.42 231.6H160.6L188.46 194.45V256.53H204.59Z"
+                fill="#EA8313"
+              />
+              <Path
+                d="M224.88 256.4H288.91V240.51H240.89V221.2H287.2V206.17H240.89V186.5H288.91V170.86H224.88V256.4Z"
+                fill="#EA8313"
+              />
+              <Path
+                d="M380.8 256.4V170.87H364.67V228.42L319.21 170.87H306.14V256.4H322.27V199.46L367.72 256.4H380.8Z"
+                fill="#EA8313"
+              />
+              <Path
+                d="M447.27 170.87H429.67L387.37 261.93L366.13 307.65H383.73L405.7 261.93L416.1 240.28H460.82L468.03 256.41H485.63L447.26 170.87H447.27ZM422.59 225.25L438.48 188.84L454.37 225.25H422.6H422.59Z"
+                fill="#EA8313"
+              />
+              <Path
+                d="M410.67 261.93L389.84 307.65H462.78C475.4 307.65 485.64 297.42 485.64 284.79C485.64 272.17 475.41 261.93 462.78 261.93H410.67Z"
+                fill="#24B098"
+              />
+            </Svg>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                color: "black",
+                marginBottom: 5,
+                marginLeft: 15,
+              }}
+            >
+              Mena Coupon
+            </Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
             <TouchableOpacity
               style={styles.searchButton}
               activeOpacity={0.5}
@@ -172,9 +238,10 @@ const Home = () => {
                 </Svg>
               </View>
             </TouchableOpacity>
-            {/* ============================== reset country ======================== */}
+          </View>
+          {/* ============================== reset country ======================== */}
 
-            {/* <TouchableOpacity
+          {/* <TouchableOpacity
               style={{
                 width: 40,
                 height: 25,
@@ -189,8 +256,8 @@ const Home = () => {
                 source={countryPhotoURL}
               />
             </TouchableOpacity> */}
-            {/* ============================ Notification icon ======================== */}
-            {/* <TouchableOpacity
+          {/* ============================ Notification icon ======================== */}
+          {/* <TouchableOpacity
                 onPress={() => navigation.navigate("Notifications")}
                 style={{
                   position: "absolute",
@@ -243,9 +310,8 @@ const Home = () => {
                   </Defs>
                 </Svg>
               </TouchableOpacity> */}
-          </View>
-          {/* this is searchbar */}
         </View>
+        {/* this is searchbar */}
 
         {/* this is top stores section */}
 
@@ -302,15 +368,6 @@ const Home = () => {
                     <Text style={styles.topStoreTotalPosts}>
                       {item?.totalPosts} offers
                     </Text> */}
-                    <Text
-                      style={{
-                        alignSelf: "center",
-                        color: "rgba(0,0,0,0.6)",
-                        marginTop: 4,
-                      }}
-                    >
-                      {item?.storeName?.slice(0, 9)}
-                    </Text>
                   </TouchableOpacity>
                 )}
               />
@@ -396,53 +453,54 @@ const Home = () => {
               </View>
             ) : (
               allData?.slice(0, 6).map((data, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => navigation.navigate("Coupon")}
-                  style={styles.couponCartInHome}
-                >
+                <View key={index} style={styles.couponCartInHome}>
                   <View style={styles.imgAndNameMainCon}>
                     <TouchableOpacity
                       style={styles.imgAndNameSecondCon}
-                      onPress={() =>
-                        navigation.navigate("ViewStore", { ...data })
-                      }
+                      onPress={() => {
+                        navigation.navigate("ViewStore", { ...data });
+                      }}
                     >
-                      <View>
-                        <Image
-                          style={styles.bestCouponImg}
-                          source={{ uri: data?.store?.photoURL }}
-                        />
-                      </View>
+                      <Image
+                        style={styles.bestCouponImg}
+                        resizeMode="contain"
+                        source={{ uri: data?.store?.photoURL }}
+                      />
                       <Text style={styles.storeName}>
-                        {data?.store?.storeName}
+                        {data?.store?.storeName?.slice(0, 15)}..
                       </Text>
                     </TouchableOpacity>
                   </View>
                   <View>
-                    <Text style={styles.postTitle}>
-                      {data?.postTitle.length > 13
-                        ? data?.postTitle.slice(0, 13)
+                    <Text numberOfLines={2} style={styles.postTitle}>
+                      {data?.postTitle?.length >= 40
+                        ? data?.postTitle?.slice(0, 38)
                         : data?.postTitle}
-                      ..
+                      {data?.postTitle?.length >= 40 && ".."}
                     </Text>
                     <Text style={styles.exDate}>
-                      {getUKFormatDate(data?.expireDate)}
+                      End in{" "}
+                      <Text style={{ fontWeight: "600" }}>
+                        {getExpireInAtDays(data?.expireDate)}
+                      </Text>{" "}
+                      days
                     </Text>
                   </View>
                   <View style={styles.couponBtnCon}>
                     <TouchableOpacity
                       style={styles.buttonContainer}
-                      onPress={() =>
-                        navigation.navigate("HomeCouponItem", { ...data })
-                      }
+                      onPress={() => {
+                        // fetch revealed post put api
+                        getRevealedCount(data?._id);
+                        navigation.navigate("HomeCouponItem", { ...data });
+                      }}
                     >
                       <View style={[styles.topLayer]}>
                         <Text style={styles.topLayerText}>Show Code</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
+                </View>
               ))
             )}
           </View>
@@ -492,10 +550,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 20,
     borderColor: "#E6E6E6",
-    width: 50,
-    height: 50,
+    width: cartWidth < 340 ? 50 : 70,
+    height: cartWidth < 340 ? 50 : 70,
     borderRadius: 50,
-    padding: 5,
+    padding: 15,
     // alignContent: "center",
     // justifyContent: "center",
   },
@@ -556,17 +614,18 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingBottom: 50,
     width: width,
   },
   couponCartInHome: {
-    width: cartWidth < 400 ? 130 : 180,
+    // width: (cartWidth >= 420 && 186) || (cartWidth < 400 ? 168 : 180),
+    width: "48%",
     maxHeight: 290,
     backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "gray",
     shadowOpacity: 0.2,
     elevation: 20,
-    // eslint-disable-next-line no-dupe-keys
     shadowColor: "gray",
     padding: 5,
     paddingBottom: 10,
@@ -581,7 +640,7 @@ const styles = StyleSheet.create({
   },
   imgAndNameSecondCon: {
     width: "90%",
-    height: "80%",
+    height: "100%",
     alignSelf: "center",
   },
   bestCouponImg: {
@@ -601,9 +660,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     alignSelf: "center",
     marginBottom: 10,
+    textAlign: "center",
   },
   exDate: {
-    fontSize: 12,
+    fontSize: 14,
     color: "rgba(0,0,0,0.4)",
     alignSelf: "center",
     marginBottom: 18,

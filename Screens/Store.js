@@ -5,7 +5,6 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  RefreshControl,
   Alert,
 } from "react-native";
 import React, { useContext, useState } from "react";
@@ -15,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   GestureHandlerRootView,
+  RefreshControl,
   ScrollView,
   TouchableOpacity,
 } from "react-native-gesture-handler";
@@ -30,18 +30,19 @@ import { style } from "deprecated-react-native-prop-types/DeprecatedTextPropType
 const Store = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
-  const { data, loadData, error } = useStore();
+  const { data, loadData, error, setRefetch: refetch } = useStore();
   //I forgot how does work it
   // const { favouriteData, error: ferror, setRefetch } = useContext(FavoriteStoreContext)
   const { favourites: favouriteData, setRefetch } =
     useFavouriteFromLocalStorage("stores");
   // refreshing controller
-  // const onRefresh = React.useCallback(() => {
-  //   setRefreshing(true);
-  //   setTimeout(() => {
-  //     setRefreshing(false);
-  //   }, 2000);
-  // }, []);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refetch((prev) => prev + 1);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   // handle Heart And Props Data
 
@@ -77,7 +78,7 @@ const Store = () => {
                 </Defs>
               </Svg>
             </TouchableOpacity>
-            <Text style={styles.heading}>Coupons Stores</Text>
+            <Text style={styles.heading}>Offer Stores</Text>
           </View>
           <TouchableOpacity
             onPress={() => navigation.navigate("Search")}
@@ -121,10 +122,14 @@ const Store = () => {
         <Divider style={{ width: "90%", alignSelf: "center" }} />
 
         {/* this is Top Stores  section*/}
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={{ flex: 1, paddingBottom: 100 }}>
             <View style={styles.topStoreCon}>
-              <Text style={styles.topStoreHeading}>Top Used Store</Text>
+              <Text style={styles.topStoreHeading}>Top Used Stores</Text>
               {loadData ? (
                 <ActivityIndicator color={"#797979"} size={"small"} />
               ) : (
@@ -141,26 +146,25 @@ const Store = () => {
                           width: 80,
                           alignItems: "center",
                           paddingTop: 15,
+                          marginRight: 10,
                         }}
                         onPress={() =>
                           navigation.navigate("ViewStore", { ...item })
                         }
                       >
-                        <View>
-                          <View
-                            style={styles.topUsedItem}
-                            keyExtractor={(item) => item.id}
-                          >
-                            <Image
-                              style={styles.TSimg}
-                              resizeMode="contain"
-                              source={{ uri: item?.photoURL }}
-                            />
-                          </View>
-                          <Text style={styles.TStext}>
-                            {item?.storeName?.slice(0, 9)}
-                          </Text>
+                        <View
+                          style={styles.topUsedItem}
+                          keyExtractor={(item) => item.id}
+                        >
+                          <Image
+                            style={styles.TSimg}
+                            resizeMode="contain"
+                            source={{ uri: item?.photoURL }}
+                          />
                         </View>
+                        <Text style={styles.TStext}>
+                          {item?.storeName?.slice(0, 9)}
+                        </Text>
                       </TouchableOpacity>
                     )}
                   />
@@ -245,13 +249,14 @@ const styles = StyleSheet.create({
   },
 
   topUsedItem: {
-    width: 55,
-    height: 55,
+    width: 70,
+    height: 70,
     borderRadius: 40,
     shadowColor: "rgba(0,0,0,0.3)",
     elevation: 20,
     backgroundColor: "#fff",
     marginBottom: 15,
+    padding: 15,
   },
   TSimg: {
     width: "100%",

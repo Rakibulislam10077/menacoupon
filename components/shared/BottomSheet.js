@@ -12,6 +12,7 @@ import React from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 import { getExpireInAtDays } from "../../Utils/formattedDate";
+import { LinkingContext } from "@react-navigation/native";
 
 const BottomSheet = ({
   item,
@@ -31,7 +32,9 @@ const BottomSheet = ({
     );
     Clipboard.setString(item?.couponCode);
   };
-  const externalLink = data?.externalLink;
+  function openSite(site) {
+    Linking.openURL(site);
+  }
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -108,6 +111,7 @@ const BottomSheet = ({
                 data?.store?.photoURL,
             }}
             style={styles.BSimg}
+            resizeMode="contain"
           />
         </View>
         <View>
@@ -215,7 +219,9 @@ const BottomSheet = ({
           days
         </Text>
         <TouchableOpacity
-          onPress={() => Linking.openURL(data?.externalLink)}
+          onPress={() => {
+            openSite(item?.externalLink || data?.externalLink);
+          }}
           style={{
             backgroundColor: "#283d27",
             width: "80%",
@@ -230,6 +236,9 @@ const BottomSheet = ({
             Buy Now!
           </Text>
         </TouchableOpacity>
+        {item?.postType === "coupon" && (
+          <Text>Don’t forget to use your code during checkout!</Text>
+        )}
       </View>
     </BottomSheetModal>
   );
@@ -242,6 +251,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     position: "relative",
+    justifyContent: "center",
   },
   hideModal: {
     position: "absolute",

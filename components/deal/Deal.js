@@ -1,7 +1,7 @@
 import { ActivityIndicator, Text, View } from "react-native";
 import React from "react";
 import StoreDetails from "../storeDetails/StoreDetails";
-import { ScrollView } from "react-native-gesture-handler";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useQueryCoupon } from "../../hooks/AllHooks";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 import { width } from "../../Utils/CustomWidthAndHeight";
@@ -13,8 +13,21 @@ const Deal = ({
   handlePresentModalPress,
 }) => {
   const { couponData, isLoading } = useQueryCoupon(storeName, postType);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   return (
-    <ScrollView style={{ backgroundColor: "#fff" }}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={{ backgroundColor: "#fff" }}
+    >
       <View style={{ flex: 1, paddingBottom: 100, paddingHorizontal: 20 }}>
         {isLoading ? (
           <ActivityIndicator style={{ marginTop: 60 }} />

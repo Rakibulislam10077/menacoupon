@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import LottieView from "lottie-react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import LottieView from "lottie-react-native";
+import { setItem } from "../Utils/asyncStorage";
 const Onboard = () => {
   const navigation = useNavigation();
   const { height, width } = Dimensions.get("window");
@@ -19,13 +19,10 @@ const Onboard = () => {
 
   const handleDone = () => {
     navigation.navigate("ChooseCountry");
+    setItem("onboarded", "1");
   };
-
   return (
-    <SafeAreaView
-      source={require("../assets/images/onBoardBackground.png")}
-      style={{ flex: 1 }}
-    >
+    <SafeAreaView style={{ flex: 1 }}>
       <Onboarding
         containerStyles={{
           paddingHorizontal: 20,
@@ -41,13 +38,16 @@ const Onboard = () => {
             image: (
               <View
                 style={{
-                  width: width * 0.9,
-                  height: height * 0.4,
+                  width: width,
+                  height: 350,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 20,
                 }}
               >
-                <LottieView
-                  source={require("../assets/images/Animation - 1697267474179.json")}
-                  autoPlay
+                <Image
+                  resizeMode="contain"
+                  source={require("../assets/images/V1.png")}
                 />
               </View>
             ),
@@ -60,14 +60,17 @@ const Onboard = () => {
             image: (
               <View
                 style={{
-                  width: width * 0.9,
-                  height: width,
+                  width: width,
+                  height: 350,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 20,
                 }}
               >
-                <LottieView
-                  source={require("../assets/images/Animation - 1697268948508.json")}
-                  autoPlay
-                  loop
+                <Image
+                  style={{ height: 350, width: width }}
+                  resizeMode="contain"
+                  source={require("../assets/images/V2.png")}
                 />
               </View>
             ),
@@ -80,14 +83,17 @@ const Onboard = () => {
             image: (
               <View
                 style={{
-                  width: width * 0.9,
-                  height: height * 0.4,
+                  width: width,
+                  height: 350,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 20,
                 }}
               >
-                <LottieView
-                  source={require("../assets/images/Animation - 1697268731752.json")}
-                  loop
-                  autoPlay
+                <Image
+                  style={{ height: 360 }}
+                  resizeMode="contain"
+                  source={require("../assets/images/V3.png")}
                 />
               </View>
             ),

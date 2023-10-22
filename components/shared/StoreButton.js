@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
+import { useReabuildCount } from "../../hooks/AllHooks";
 
 const StoreButton = ({
   children,
@@ -11,11 +12,12 @@ const StoreButton = ({
   setIsBottomSheetOpen,
 }) => {
   const [clickedButton, setClickedButton] = useState(false);
-
+  const { getRevealedCount } = useReabuildCount();
   const handleButton = () => {
     setIsBottomSheetOpen(data || POitem || item);
     setClickedButton(true);
     handlePresentModalPress();
+    getRevealedCount(data?._id || POitem?._id || item?._id);
   };
 
   return (

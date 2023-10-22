@@ -379,7 +379,12 @@ const Account = () => {
         </View>
         <Divider style={{ marginBottom: 20 }} />
         <TouchableOpacity
-          onPress={() => Alert.alert("coming soon")}
+          onPress={() =>
+            Alert.alert(
+              "Coming soon",
+              "Insha-allah, Very soon we will launch V:1.0.1 include so many features. \n\nThank You"
+            )
+          }
           activeOpacity={0.5}
           style={styles.accountSubCon}
         >

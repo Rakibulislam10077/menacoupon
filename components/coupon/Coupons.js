@@ -1,6 +1,6 @@
 import { ActivityIndicator, Text, View } from "react-native";
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import StoreDetails from "../storeDetails/StoreDetails";
 import { useQueryCoupon } from "../../hooks/AllHooks";
 import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
@@ -15,8 +15,21 @@ const Copons = ({
   // eslint-disable-next-line no-unused-vars
 
   const { couponData, isLoading } = useQueryCoupon(storeName, postType);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   return (
-    <ScrollView style={{ backgroundColor: "#fff" }}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={{ backgroundColor: "#fff" }}
+    >
       <View style={{ flex: 1, paddingBottom: 100, paddingHorizontal: 20 }}>
         {isLoading ? (
           <ActivityIndicator style={{ marginTop: 60 }} />

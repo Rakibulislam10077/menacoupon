@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { width } from "../../Utils/CustomWidthAndHeight";
-
+const miniDeviceWidth = Dimensions.get("window").width;
 export const customeStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -12,11 +12,11 @@ export const customeStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    marginBottom: 20,
-    flex: 1,
+    marginBottom: 10,
+    flex: 1.3,
   },
   locationIcon: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   textCon: {
     alignItems: "center",
@@ -44,12 +44,12 @@ export const customeStyle = StyleSheet.create({
     marginTop: 20,
     flex: 2,
     width: width,
-    maxWidth: 600,
+    maxWidth: 500,
   },
   countryView: {
     borderWidth: 1,
-    height: 90,
-    width: 90,
+    height: miniDeviceWidth < 360 ? 70 : 110,
+    width: miniDeviceWidth < 360 ? 70 : 110,
     borderColor: "rgba(0,0,0,0.1)",
     borderRadius: 10,
     alignItems: "center",
@@ -69,7 +69,7 @@ export const customeStyle = StyleSheet.create({
     flex: 0.5,
   },
   useAppBtn: {
-    height: 40,
+    height: 50,
     width: width * 0.8,
     maxWidth: 500,
     borderWidth: 1,

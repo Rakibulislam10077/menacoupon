@@ -17,8 +17,8 @@ export const customStyle = StyleSheet.create({
   imgCon: {
     shadowColor: "rgba(0,0,0,0.5)",
     elevation: 15,
-    flex: 1,
-    height: 60,
+    width: 70,
+    height: 70,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
@@ -32,8 +32,8 @@ export const customStyle = StyleSheet.create({
     justifyContent: "space-between",
   },
   cartImg: {
-    width: "80%",
-    height: "80%",
+    width: "70%",
+    height: "70%",
     borderRadius: 5,
   },
   postTitleAndDateCon: {
@@ -45,7 +45,7 @@ export const customStyle = StyleSheet.create({
     marginBottom: 10,
   },
   exDate: {
-    fontSize: 16,
+    fontSize: 14,
     color: "rgba(0,0,0,0.5)",
   },
   divider: {

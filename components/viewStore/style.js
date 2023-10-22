@@ -63,7 +63,7 @@ export const customStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 15,
   },
   imgAndTextCon: {
@@ -71,8 +71,8 @@ export const customStyle = StyleSheet.create({
     alignItems: "center",
   },
   bttmBtnImg: {
-    width: 60,
-    height: 50,
+    width: 50,
+    height: 40,
     borderRadius: 6,
     marginRight: 15,
   },

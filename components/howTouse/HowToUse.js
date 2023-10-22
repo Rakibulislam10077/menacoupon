@@ -1,19 +1,21 @@
 import { Image, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useGetStoreById } from "../../hooks/AllHooks";
+import { useGetStoreById, useGetStoreByStoreName } from "../../hooks/AllHooks";
 import { ScrollView } from "react-native-gesture-handler";
 
-const HowToUse = ({ item, data }) => {
-  const [store, setStore] = useState({});
-  const { getStoreById } = useGetStoreById();
-  useEffect(() => {
-    const handleGetStoreById = async () => {
-      const fetchedStore = await getStoreById(item?._id);
-      setStore(fetchedStore);
-    };
-    handleGetStoreById();
-  }, []);
-  console.log(data);
+const HowToUse = ({ item: store }) => {
+  // const [store, setStore] = useState({});
+  // const { getStoreById } = useGetStoreById();
+  // const { getStoreByStoreName } = useGetStoreByStoreName();
+  // useEffect(() => {
+  //   const handleGetStoreById = async () => {
+  //     const fetchedStore = item?.store?.storeName
+  //       ? await getStoreByStoreName(item?.store?.storeName)
+  //       : await getStoreById(item?._id);
+  //     setStore(fetchedStore);
+  //   };
+  //   handleGetStoreById();
+  // }, []);
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View

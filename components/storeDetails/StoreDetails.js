@@ -54,8 +54,6 @@ const StoreDetails = ({
           {/* button components */}
           {item?.postType === "deal" || POitem?.postType === "deal" ? (
             <DealButton
-              setIsBottomSheetOpen={setIsBottomSheetOpen}
-              handlePresentModalPress={handlePresentModalPress}
               couponCode={item?.couponCode || POitem?.couponCode}
               POitem={POitem}
               data={data}
@@ -63,8 +61,6 @@ const StoreDetails = ({
             />
           ) : (
             <StoreButton
-              setIsBottomSheetOpen={setIsBottomSheetOpen}
-              handlePresentModalPress={handlePresentModalPress}
               couponCode={item?.couponCode || POitem?.couponCode}
               POitem={POitem}
               data={data}

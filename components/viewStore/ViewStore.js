@@ -49,9 +49,10 @@ const ViewStore = (props, isFavourite) => {
   const [store, setStore] = useState({});
   const { getStoreById } = useGetStoreById();
   const { getStoreByStoreName } = useGetStoreByStoreName();
+  const bottomSheetHeight = Dimensions.get("screen").height;
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ["25%", "80%"], []);
+  const snapPoints = useMemo(() => [550], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     setBackDrop(true);

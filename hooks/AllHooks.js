@@ -9,7 +9,7 @@ async function getToken() {
   return token;
 }
 // STORE
-export const useStore = () => {
+export const useStore = (type) => {
   const [loadData, setloadData] = useState(true);
   const [data, setData] = useState([]);
   const [err, setErr] = useState(null);
@@ -21,7 +21,7 @@ export const useStore = () => {
       return userStore;
     };
     const getStoreApi = async () => {
-      const url = `${mainURL}/store/?country=${await getCountry()}`;
+      const url = `${mainURL}/store/?country=${await getCountry()}&${type}`;
       fetch(`${url}`)
         .then((res) => res.json())
         .then((data) => {
@@ -200,19 +200,19 @@ export const useQueryCoupon = (name, type) => {
 };
 
 // ALL COUPON
-export const useAllcoupon = () => {
+export const useAllcoupon = (type) => {
   const [allData, setAllData] = useState([]);
   const [loadData, setLoadData] = useState(true);
   const [error, setError] = useState(null);
   // const [country, setCountry] = useState('')
-  const [refetch, setRefetch] = useState(0);
+  const [refetchPost, setRefetchPost] = useState(0);
   useEffect(() => {
     const getCountry = async () => {
       const userCountry = await AsyncStorage.getItem("couponCountry");
       return userCountry;
     };
     const getApi = async () => {
-      const url = `${mainURL}/post?country=${await getCountry()}`;
+      const url = `${mainURL}/post?country=${await getCountry()}&${type}`;
       fetch(`${url}`)
         .then((response) => response.json())
         .then((data) => {
@@ -224,9 +224,9 @@ export const useAllcoupon = () => {
         });
     };
     getApi();
-  }, [refetch]);
+  }, [refetchPost]);
 
-  return { allData, loadData, error, setRefetch };
+  return { allData, loadData, error, setRefetchPost };
 };
 
 // FOR CAROUSEL

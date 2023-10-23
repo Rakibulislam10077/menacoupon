@@ -29,6 +29,7 @@ import Account from "../Screens/Account";
 import TermsAndCondition from "../components/TermsAndCondition/TermsAndCondition";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import { getItem } from "../Utils/asyncStorage";
+import ChooseAgainCountry from "../components/chooseAgainCountry/ChooseAgainCountry";
 // import { getSelectedCountry } from "../Utils/getSelectedCountry";
 
 const Stack = createNativeStackNavigator();
@@ -36,24 +37,6 @@ const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
   const { number } = useContact();
-  // const navigation = useNavigation();
-  // const { userInfo } = useContext(UserContext);
-  // const [backDrop, setBackDrop] = useState(false);
-  // // ref
-  // const bottomSheetModalRef = useRef(null);
-  // // variables
-  // const snapPoints = useMemo(() => ['25%', '70%'], []);
-  // const handlePresentModalPress = useCallback(() => {
-  //     bottomSheetModalRef.current?.present();
-  //     setBackDrop(true);
-  // }, []);
-  // // callbacks
-  // const handleDismissModal = useCallback(() => {
-  //     bottomSheetModalRef.current?.dismiss();
-  // }, []);
-  const handleFavouritAlert = () => {
-    Alert.alert("coming soon");
-  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -511,59 +494,56 @@ const HomeScreen = () => {
 
 const Navigator = () => {
   const [showOnboarding, setShowOnboarding] = useState(null);
+  const [showCountry, setShowCountry] = useState(null);
 
   useEffect(() => {
+    const checkIfAlreadySelectCountry = async () => {
+      let country = await AsyncStorage.getItem("selectedCountry");
+      if (country == 1) {
+        setShowCountry(false);
+      } else {
+        setShowCountry(true);
+      }
+    };
+    checkIfAlreadySelectCountry();
+  }, []);
+
+  console.log(showCountry, "from leguna");
+  // =============== the section for onboarding=====================
+  useEffect(() => {
+    const checkIfAlreadyOnborded = async () => {
+      let onboarded = await AsyncStorage.getItem("onboarded");
+      if (onboarded == 1) {
+        setShowOnboarding(false);
+      } else {
+        setShowOnboarding(true);
+      }
+    };
     checkIfAlreadyOnborded();
-  });
-  const checkIfAlreadyOnborded = async () => {
-    let onboarded = await getItem("onboarded");
-    if (onboarded == 1) {
-      setShowOnboarding(false);
-    } else {
-      setShowOnboarding(true);
-    }
-  };
+  }, []);
 
   if (showOnboarding == null) {
     return null;
   }
-
-  if (showOnboarding) {
+  if (!showOnboarding) {
     return (
-      <Stack.Navigator>
-        {/* {isLaunched && (
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Onboard"
-          component={Onboard}
-        />
-      )}
-      {
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ChooseCountry"
-          component={ChooseCountry}
-        />
-      } */}
-        {/* {
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Onboard"
-            component={Onboard}
-          />
-        } */}
-        {
+      <Stack.Navigator initialRouteName="ChooseCountry">
+        {showCountry && (
           <Stack.Screen
             options={{ headerShown: false }}
             name="ChooseCountry"
             component={ChooseCountry}
           />
-        }
-
+        )}
         <Stack.Screen
           options={{ headerShown: false }}
           name="HomeScreen"
           component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ChooseAgainCountry"
+          component={ChooseAgainCountry}
         />
         <Stack.Screen
           options={{ headerShown: false }}
@@ -611,36 +591,11 @@ const Navigator = () => {
           name="PrivacyPolicy"
           component={PrivacyPolicy}
         />
-        {/* <Stack.Screen
-        options={{ headerShown: false }}
-        name="SignUp"
-        component={SignUp}
-      /> */}
-        {/* <Stack.Screen
-        promptAsync={promptAsync}
-        options={{ headerShown: false }}
-        name="Login"
-        component={Login}
-      /> */}
       </Stack.Navigator>
     );
   } else {
     return (
-      <Stack.Navigator>
-        {/* {isLaunched && (
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Onboard"
-          component={Onboard}
-        />
-      )}
-      {
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ChooseCountry"
-          component={ChooseCountry}
-        />
-      } */}
+      <Stack.Navigator initialRouteName="Onboard">
         {
           <Stack.Screen
             options={{ headerShown: false }}
@@ -655,11 +610,15 @@ const Navigator = () => {
             component={ChooseCountry}
           />
         }
-
         <Stack.Screen
           options={{ headerShown: false }}
           name="HomeScreen"
           component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ChooseAgainCountry"
+          component={ChooseAgainCountry}
         />
         <Stack.Screen
           options={{ headerShown: false }}

@@ -8,7 +8,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Svg, Path, G, Defs, ClipPath, Rect } from "react-native-svg";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Divider } from "react-native-paper";
 import StoreDetails from "../components/storeDetails/StoreDetails";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,14 +26,14 @@ import {
 import { useAllcoupon } from "../hooks/AllHooks";
 import BottomSheet from "../components/shared/BottomSheet";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-
+export let refetchCouponPost;
 const Coupon = ({ navigation }) => {
-  const { allData, loadData, error, setRefetch } = useAllcoupon();
+  const { allData, loadData, error, setRefetchPost } =
+    useAllcoupon("limit=1000");
   const [backDrop, setBackDrop] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-
-  // ref
+  refetchCouponPost = setRefetchPost;
   const bottomSheetModalRef = useRef(null);
 
   // variables
@@ -47,7 +53,7 @@ const Coupon = ({ navigation }) => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      setRefetch((prev) => prev + 1);
+      setRefetchPost((prev) => prev + 1);
     }, 2000);
   }, []);
 

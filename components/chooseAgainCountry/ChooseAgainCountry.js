@@ -5,60 +5,67 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Svg, Path } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { customeStyle } from "../components/chooseCountry/style";
-import { screenHeight } from "../Utils/CustomWidthAndHeight";
+import { customeStyle } from "../chooseCountry/style";
 import { View } from "react-native";
 import { Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "react-native";
+import { useAllcoupon, useStore } from "../../hooks/AllHooks";
+import { refetchHomePost, refetchHomeStore } from "../../Screens/Home";
+import { refetchCouponPost } from "../../Screens/Coupon";
+import { refetchStoreData } from "../../Screens/Store";
 
-const ChooseCountry = () => {
+const ChooseAgainCountry = (props) => {
+  const refetchHomeStoreData = refetchHomeStore;
+  const refetchHomePosteData = refetchHomePost;
+  const refetchCouponPostData = refetchCouponPost;
+  const refetchStoreDataFromStore = refetchStoreData;
   const navigation = useNavigation();
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const { setRefetch: storeRefetch } = useStore();
+  const { setRefetchPost } = useAllcoupon();
   const countrys = [
     {
       id: 1,
       name: "Qatar",
       shortForm: "Qatar",
-      image: require("../assets/images/qatar.png"),
+      image: require("../../assets/images/qatar.png"),
     },
     {
       id: 2,
       name: "Oman",
       shortForm: "Oman",
-      image: require("../assets/images/oman.png"),
+      image: require("../../assets/images/oman.png"),
     },
     {
       id: 3,
       name: "Saudi Arabia",
-      // name: "KSA",
       shortForm: "KSA",
-      image: require("../assets/images/arabia.png"),
+      image: require("../../assets/images/arabia.png"),
     },
     {
       id: 4,
       name: "Egypt",
       shortForm: "Egypt",
-      image: require("../assets/images/egypt.png"),
+      image: require("../../assets/images/egypt.png"),
     },
     {
       id: 5,
       name: "United Arab Emirates",
-      // name: "UAE",
       shortForm: "UAE",
-      image: require("../assets/images/emirates.png"),
+      image: require("../../assets/images/emirates.png"),
     },
     {
       id: 6,
       name: "Kuwait",
       shortForm: "Kuwait",
-      image: require("../assets/images/kuwait.png"),
+      image: require("../../assets/images/kuwait.png"),
     },
     {
       id: 7,
       name: "Bahrain",
       shortForm: "Bahrain",
-      image: require("../assets/images/bahrain.png"),
+      image: require("../../assets/images/bahrain.png"),
     },
   ];
 
@@ -68,6 +75,16 @@ const ChooseCountry = () => {
   };
 
   const handleUseTheAppButton = async () => {
+    // country flag refresh
+    props.route.params.setRefetch((prev) => prev + 1);
+    refetchHomeStoreData((prev) => prev + 1);
+    refetchHomePosteData((prev) => prev + 1);
+    // refetchCouponPostData((prev) => prev + 1);
+    // refetchStoreDataFromStore((prev) => prev + 1);
+
+    // storeRefetch((prev) => prev + 1);
+    // setRefetchPost((prev) => prev + 1);
+
     navigation.navigate("HomeScreen");
     await AsyncStorage.setItem("selectedCountry", "1");
   };
@@ -173,7 +190,7 @@ const ChooseCountry = () => {
   );
 };
 
-export default ChooseCountry;
+export default ChooseAgainCountry;
 
 /*
 import firebase from 'firebase/app';

@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
-import { setItem } from "../Utils/asyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Onboard = () => {
   const navigation = useNavigation();
   const { height, width } = Dimensions.get("window");
@@ -17,9 +17,9 @@ const Onboard = () => {
     );
   };
 
-  const handleDone = () => {
+  const handleDone = async () => {
     navigation.navigate("ChooseCountry");
-    setItem("onboarded", "1");
+    await AsyncStorage.setItem("onboarded", "1");
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>

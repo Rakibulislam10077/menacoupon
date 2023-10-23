@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { width } from "../../Utils/CustomWidthAndHeight";
-
+const storeCartWidth = Dimensions.get("window").width;
 export const customStyle = StyleSheet.create({
   storeDetailsCard: {
     flex: 1,
     backgroundColor: "#fff",
-    minWidth: width * 0.9,
+    width: width * 0.9,
     shadowColor: "rgba(0,0,0,0.6)",
     elevation: 15,
     marginTop: 20,

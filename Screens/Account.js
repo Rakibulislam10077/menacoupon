@@ -15,27 +15,59 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../App";
 import { useNavigation } from "@react-navigation/native";
-import { useContact } from "../hooks/AllHooks";
+import { useAllcoupon, useContact, useStore } from "../hooks/AllHooks";
 
 const Account = () => {
   const navigation = useNavigation();
   // const { userInfo, setRefetch } = useUserInfo() // user info hook from allHooks component
-  const { userInfo, setRefetch } = useContext(UserContext);
+  // const { userInfo, setRefetch } = useContext(UserContext);
   const [countryPhotoURL, setCountryPhotoURL] = useState("");
+  const [refetch, setRefetch] = useState(0);
   const { number } = useContact();
   const countrys = [
-    { id: 1, name: "Qatar", image: require("../assets/images/qatar.png") },
-    { id: 2, name: "Oman", image: require("../assets/images/oman.png") },
-    { id: 3, name: "KSA", image: require("../assets/images/arabia.png") },
-    { id: 4, name: "Egypt", image: require("../assets/images/egypt.png") },
-    { id: 5, name: "UAE", image: require("../assets/images/emirates.png") },
-    { id: 6, name: "Kuwait", image: require("../assets/images/kuwait.png") },
-    { id: 7, name: "Bahrain", image: require("../assets/images/bahrain.png") },
+    {
+      id: 1,
+      name: "Qatar",
+      image: require("../assets/images/qatar.png"),
+    },
+    {
+      id: 2,
+      name: "Oman",
+      image: require("../assets/images/oman.png"),
+    },
+    {
+      id: 3,
+      name: "Saudi Arabia",
+      image: require("../assets/images/arabia.png"),
+    },
+    {
+      id: 4,
+      name: "Egypt",
+      image: require("../assets/images/egypt.png"),
+    },
+    {
+      id: 5,
+      name: "United Arab Emirates",
+      shortForm: "UAE",
+      image: require("../assets/images/emirates.png"),
+    },
+    {
+      id: 6,
+      name: "Kuwait",
+      shortForm: "Kuwait",
+      image: require("../assets/images/kuwait.png"),
+    },
+    {
+      id: 7,
+      name: "Bahrain",
+      shortForm: "Bahrain",
+      image: require("../assets/images/bahrain.png"),
+    },
   ];
 
   const deleteToken = async () => {
     const remove_token = await AsyncStorage.removeItem("accessToken");
-    setRefetch((prev) => prev + 1);
+    // setRefetch((prev) => prev + 1);
     return remove_token;
   };
 
@@ -48,7 +80,13 @@ const Account = () => {
       setCountryPhotoURL(selected_country.image);
     };
     getCountry();
-  }, []);
+  }, [refetch]);
+
+  // ========================reset country function =====================
+  const handleCountryAsyncEvent = async () => {
+    navigation.navigate("ChooseAgainCountry", { setRefetch });
+  };
+
   return (
     // <SafeAreaView>
     //   <ScrollView showsVerticalScrollIndicator={false}>
@@ -376,6 +414,21 @@ const Account = () => {
               My Account
             </Text>
           </View>
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 25,
+              position: "absolute",
+              top: 30,
+              right: 30,
+            }}
+            onPress={() => handleCountryAsyncEvent()}
+          >
+            <Image
+              style={{ width: "100%", height: "100%" }}
+              source={countryPhotoURL}
+            />
+          </TouchableOpacity>
         </View>
         <Divider style={{ marginBottom: 20 }} />
         <TouchableOpacity

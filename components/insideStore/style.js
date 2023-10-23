@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet } from "react-native";
-const storeCartWidth = Dimensions.get("window").width;
 export const customStyle_for_insideStore = StyleSheet.create({
   store: {
     // width: (storeCartWidth >= 420 && 186) || (storeCartWidth < 400 ? 168 : 180),

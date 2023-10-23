@@ -26,13 +26,14 @@ import {
 import { InsideStore_and_favouriteStore } from "../components/insideStore/InsideStore_and_favouriteStore";
 import { style } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 // import { FavoriteStoreContext } from "../App";
-
+export let refetchStoreData;
 const Store = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
-  const { data, loadData, error, setRefetch: refetch } = useStore();
+  const { data, loadData, error, setRefetch: refetch } = useStore("limit=1000");
   //I forgot how does work it
   // const { favouriteData, error: ferror, setRefetch } = useContext(FavoriteStoreContext)
+  refetchStoreData = refetch;
   const { favourites: favouriteData, setRefetch } =
     useFavouriteFromLocalStorage("stores");
   // refreshing controller

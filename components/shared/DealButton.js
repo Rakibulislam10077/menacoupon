@@ -1,19 +1,14 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { useReabuildCount } from "../../hooks/AllHooks";
+import { useNavigation } from "@react-navigation/native";
 
-const dealButton = ({
-  handlePresentModalPress,
-  data,
-  item,
-  POitem,
-  setIsBottomSheetOpen,
-}) => {
+const dealButton = ({ data, item, POitem }) => {
+  const navigation = useNavigation();
   const { getRevealedCount } = useReabuildCount();
   const handleButton = () => {
-    setIsBottomSheetOpen(data || POitem || item);
-    handlePresentModalPress();
     getRevealedCount(data?._id || POitem?._id || item?._id);
+    navigation.navigate("HomeCouponItem", { ...data, ...POitem, ...item });
   };
 
   return (

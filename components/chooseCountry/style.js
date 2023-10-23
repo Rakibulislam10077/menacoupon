@@ -13,7 +13,7 @@ export const customeStyle = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 10,
-    flex: 1.3,
+    flex: 1.2,
   },
   locationIcon: {
     marginBottom: 5,
@@ -48,8 +48,8 @@ export const customeStyle = StyleSheet.create({
   },
   countryView: {
     borderWidth: 1,
-    height: miniDeviceWidth < 360 ? 70 : 110,
-    width: miniDeviceWidth < 360 ? 70 : 110,
+    height: 105,
+    width: 105,
     borderColor: "rgba(0,0,0,0.1)",
     borderRadius: 10,
     alignItems: "center",

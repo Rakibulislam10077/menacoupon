@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { useReabuildCount } from "../../hooks/AllHooks";
+import { useNavigation } from "@react-navigation/native";
 
 const StoreButton = ({
   children,
@@ -11,13 +12,15 @@ const StoreButton = ({
   POitem,
   setIsBottomSheetOpen,
 }) => {
+  const navigation = useNavigation();
   const [clickedButton, setClickedButton] = useState(false);
   const { getRevealedCount } = useReabuildCount();
   const handleButton = () => {
-    setIsBottomSheetOpen(data || POitem || item);
+    // setIsBottomSheetOpen(data || POitem || item);
     setClickedButton(true);
-    handlePresentModalPress();
+    // handlePresentModalPress();
     getRevealedCount(data?._id || POitem?._id || item?._id);
+    navigation.navigate("HomeCouponItem", { ...data, ...POitem, ...item });
   };
 
   return (

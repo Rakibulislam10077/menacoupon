@@ -37,13 +37,12 @@ const Home = () => {
   const navigation = useNavigation();
   const carouselWidth = Dimensions.get("screen").width;
   const itemWidth = Dimensions.get("window").width;
-
   const [refreshing, setRefreshing] = React.useState(false); //for refreshing
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
-  const { allData, setRefetchPost } = useAllcoupon("limit=6");
-  const { data, isLoading, setRefetch } = useStore("limit=15");
-  refetchHomeStore = setRefetch;
+  const { allData, setRefetchPost } = useAllcoupon();
+  const { data, isLoading, setRefetchStore } = useStore();
+  refetchHomeStore = setRefetchStore;
   refetchHomePost = setRefetchPost;
   const { getRevealedCount } = useReabuildCount();
   // const { notify } = useNotification();
@@ -71,10 +70,10 @@ const Home = () => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      setRefetch((prev) => prev + 1);
-    }, 2000);
+      setRefetchPost((prev) => prev + 1);
+      setRefetchStore((prev) => prev + 1);
+    }, 500);
   }, []);
-  console.log(data.length);
   useEffect(() => {
     const getCountry = async () => {
       const userCountry = await AsyncStorage.getItem("couponCountry");
@@ -332,7 +331,15 @@ const Home = () => {
             {isLoading ? (
               <ActivityIndicator size={"small"} />
             ) : data.length === 0 ? (
-              <Text style={{ color: "#797979" }}>empty data</Text>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <Text style={{ color: "#ff0000" }}>empty data</Text>
+              </View>
             ) : (
               <FlatList
                 data={data.sort((a, b) => a - b)}
@@ -448,7 +455,7 @@ const Home = () => {
                 </Text>
               </View>
             ) : (
-              allData?.slice(0, 6).map((data, index) => (
+              allData?.map((data, index) => (
                 <View key={index} style={styles.couponCartInHome}>
                   <View style={styles.imgAndNameMainCon}>
                     <TouchableOpacity

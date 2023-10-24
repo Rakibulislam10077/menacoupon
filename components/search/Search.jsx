@@ -61,7 +61,7 @@ const Search = (props) => {
     setTimeout(() => {
       setRefreshing(false);
       setRefetch((prev) => prev + 1);
-    }, 2000);
+    }, 500);
   }, []);
 
   //this is top search item in global search

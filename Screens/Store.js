@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Divider } from "react-native-paper";
 import { Svg, Path, G, Defs, ClipPath, Rect } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -30,19 +30,26 @@ export let refetchStoreData;
 const Store = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
-  const { data, loadData, error, setRefetch: refetch } = useStore("limit=1000");
+  const { data, isLoading, error, setRefetchStore } = useStore();
   //I forgot how does work it
   // const { favouriteData, error: ferror, setRefetch } = useContext(FavoriteStoreContext)
-  refetchStoreData = refetch;
+  refetchStoreData = setRefetchStore;
   const { favourites: favouriteData, setRefetch } =
     useFavouriteFromLocalStorage("stores");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRefetchStore((prev) => prev + 1);
+    }, 500);
+  }, [data]);
+
   // refreshing controller
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    refetch((prev) => prev + 1);
+    setRefetchStore((prev) => prev + 1);
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    }, 500);
   }, []);
 
   // handle Heart And Props Data
@@ -131,8 +138,27 @@ const Store = () => {
           <View style={{ flex: 1, paddingBottom: 100 }}>
             <View style={styles.topStoreCon}>
               <Text style={styles.topStoreHeading}>Top Used Stores</Text>
-              {loadData ? (
-                <ActivityIndicator color={"#797979"} size={"small"} />
+              {isLoading ? (
+                <View
+                  style={{
+                    height: 200,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <ActivityIndicator color={"#797979"} size={"small"} />
+                </View>
+              ) : data.length === 0 ? (
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: 70,
+                  }}
+                >
+                  <Text style={{ color: "#ff0000" }}>empty data</Text>
+                </View>
               ) : (
                 <View>
                   <FlatList
@@ -176,27 +202,53 @@ const Store = () => {
             <View style={[styles.allStoreMainCon]}>
               <Text style={styles.allStoreText}>All Stores</Text>
               <View style={styles.storeCartContainer}>
-                {data?.map((item) => {
-                  // render if the store in favourite
-                  if (favouriteData?.find((storeId) => storeId === item._id)) {
-                    return (
-                      <InsideStore_and_favouriteStore
-                        key={item?._id}
-                        item={item}
-                        isFavourite={true}
-                        setRefetch={setRefetch}
-                      />
-                    );
-                  } else {
-                    return (
-                      <InsideStore_and_favouriteStore
-                        key={item?._id}
-                        item={item}
-                        setRefetch={setRefetch}
-                      />
-                    );
-                  }
-                })}
+                {isLoading ? (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 90,
+                      width: "100%",
+                    }}
+                  >
+                    <ActivityIndicator size={"small"} />
+                  </View>
+                ) : data.length === 0 ? (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 200,
+                      width: "100%",
+                    }}
+                  >
+                    <Text style={{ color: "#ff0000" }}>empty data</Text>
+                  </View>
+                ) : (
+                  data?.map((item) => {
+                    // render if the store in favourite
+                    if (
+                      favouriteData?.find((storeId) => storeId === item._id)
+                    ) {
+                      return (
+                        <InsideStore_and_favouriteStore
+                          key={item?._id}
+                          item={item}
+                          isFavourite={true}
+                          setRefetch={setRefetch}
+                        />
+                      );
+                    } else {
+                      return (
+                        <InsideStore_and_favouriteStore
+                          key={item?._id}
+                          item={item}
+                          setRefetch={setRefetch}
+                        />
+                      );
+                    }
+                  })
+                )}
               </View>
             </View>
           </View>

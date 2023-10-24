@@ -155,9 +155,11 @@ export default function HomeCouponItem(props) {
               Buy Now!
             </Text>
           </TouchableOpacity>
-          <Text style={{ color: "rgba(0,0,0,0.6)" }}>
-            Don’t forget to use your code during checkout!
-          </Text>
+          {data?.postType === "coupon" && (
+            <Text style={{ color: "rgba(0,0,0,0.6)" }}>
+              Don’t forget to use your code during checkout!
+            </Text>
+          )}
         </View>
       </View>
     </SafeAreaView>

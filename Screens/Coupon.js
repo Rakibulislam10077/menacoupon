@@ -11,6 +11,7 @@ import { Svg, Path, G, Defs, ClipPath, Rect } from "react-native-svg";
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -26,37 +27,36 @@ import {
 import { useAllcoupon } from "../hooks/AllHooks";
 import BottomSheet from "../components/shared/BottomSheet";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-export let refetchCouponPost;
 const Coupon = ({ navigation }) => {
-  const { allData, loadData, error, setRefetchPost } =
-    useAllcoupon("limit=1000");
+  const { allData, loadData, error, setRefetchPost } = useAllcoupon();
   const [backDrop, setBackDrop] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-  refetchCouponPost = setRefetchPost;
+  // ==================botttonSheet functionality==================
   const bottomSheetModalRef = useRef(null);
-
-  // variables
   const snapPoints = useMemo(() => ["25%", "80%"], []);
-
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     setBackDrop(true);
   }, []);
-
-  // callbacks
   const handleDismissModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setRefetchPost((prev) => prev + 1);
+    }, 500);
+  }, [allData]);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false);
       setRefetchPost((prev) => prev + 1);
-    }, 2000);
+      setRefreshing(false);
+    }, 500);
   }, []);
-
+  // ===============================================
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <BottomSheetModalProvider>
@@ -179,7 +179,15 @@ const Coupon = ({ navigation }) => {
             }}
           >
             {loadData ? (
-              <ActivityIndicator size={"small"} color={"#283d27"} />
+              <View
+                style={{
+                  height: 200,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size={"small"} color={"#283d27"} />
+              </View>
             ) : allData.length === 0 ? (
               <View
                 style={{

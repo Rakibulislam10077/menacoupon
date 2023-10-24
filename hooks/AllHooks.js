@@ -10,10 +10,10 @@ async function getToken() {
 }
 // STORE
 export const useStore = (type) => {
-  const [loadData, setloadData] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [err, setErr] = useState(null);
-  const [refetch, setRefetch] = useState(0);
+  const [refetchStore, setRefetchStore] = useState(0);
 
   useEffect(() => {
     const getCountry = async () => {
@@ -26,15 +26,15 @@ export const useStore = (type) => {
         .then((res) => res.json())
         .then((data) => {
           setData(data?.data);
-          setloadData(false);
+          setIsLoading(false);
         })
         .catch((error) => {
           setErr(error);
         });
     };
     getStoreApi();
-  }, [refetch]);
-  return { data, setData, loadData, err, setRefetch };
+  }, [refetchStore]);
+  return { data, setData, isLoading, err, setRefetchStore };
 };
 
 export const useGetStoreById = () => {

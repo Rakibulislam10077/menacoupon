@@ -508,7 +508,6 @@ const Navigator = () => {
     checkIfAlreadySelectCountry();
   }, []);
 
-  console.log(showCountry, "from leguna");
   // =============== the section for onboarding=====================
   useEffect(() => {
     const checkIfAlreadyOnborded = async () => {

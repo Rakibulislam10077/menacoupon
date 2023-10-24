@@ -18,11 +18,9 @@ import { refetchStoreData } from "../../Screens/Store";
 const ChooseAgainCountry = (props) => {
   const refetchHomeStoreData = refetchHomeStore;
   const refetchHomePosteData = refetchHomePost;
-  const refetchCouponPostData = refetchCouponPost;
-  const refetchStoreDataFromStore = refetchStoreData;
   const navigation = useNavigation();
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const { setRefetch: storeRefetch } = useStore();
+  const { setRefetchStore } = useStore();
   const { setRefetchPost } = useAllcoupon();
   const countrys = [
     {
@@ -76,15 +74,9 @@ const ChooseAgainCountry = (props) => {
 
   const handleUseTheAppButton = async () => {
     // country flag refresh
-    props.route.params.setRefetch((prev) => prev + 1);
-    refetchHomeStoreData((prev) => prev + 1);
-    refetchHomePosteData((prev) => prev + 1);
-    // refetchCouponPostData((prev) => prev + 1);
-    // refetchStoreDataFromStore((prev) => prev + 1);
-
-    // storeRefetch((prev) => prev + 1);
-    // setRefetchPost((prev) => prev + 1);
-
+    await props.route.params.setRefetch((prev) => prev + 1);
+    await refetchHomeStoreData((prev) => prev + 1);
+    await refetchHomePosteData((prev) => prev + 1);
     navigation.navigate("HomeScreen");
     await AsyncStorage.setItem("selectedCountry", "1");
   };
